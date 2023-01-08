@@ -13,7 +13,7 @@ export abstract class Controller<L extends Error, R> {
   protected ok(
     req: Request,
     res: Response,
-    result: Right<L, R>,
+    result: Right<L, R>
   ): R | undefined {
     return this.sendSuccess(req, res, StatusCodes.OK, result);
   }
@@ -21,7 +21,7 @@ export abstract class Controller<L extends Error, R> {
   protected created(
     req: Request,
     res: Response,
-    result: Right<L, R>,
+    result: Right<L, R>
   ): R | undefined {
     return this.sendSuccess(req, res, StatusCodes.CREATED, result);
   }
@@ -29,7 +29,7 @@ export abstract class Controller<L extends Error, R> {
   protected noContent(
     req: Request,
     res: Response,
-    result: Right<L, R>,
+    result: Right<L, R>
   ): R | undefined {
     return this.sendSuccess(req, res, StatusCodes.NO_CONTENT, result);
   }
@@ -37,7 +37,7 @@ export abstract class Controller<L extends Error, R> {
   protected badRequest(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>,
+    result: L | Wrong<L, R>
   ): L {
     return this.sendFailure(req, res, StatusCodes.BAD_REQUEST, result);
   }
@@ -53,7 +53,7 @@ export abstract class Controller<L extends Error, R> {
   protected unprocessableEntity(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>,
+    result: L | Wrong<L, R>
   ): L {
     return this.sendFailure(req, res, StatusCodes.UNPROCESSABLE_ENTITY, result);
   }
@@ -61,7 +61,7 @@ export abstract class Controller<L extends Error, R> {
   protected tooManyRequests(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>,
+    result: L | Wrong<L, R>
   ): L {
     return this.sendFailure(req, res, StatusCodes.TOO_MANY_REQUESTS, result);
   }
@@ -69,20 +69,20 @@ export abstract class Controller<L extends Error, R> {
   protected internalServerError(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>,
+    result: L | Wrong<L, R>
   ): L {
     return this.sendFailure(
       req,
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
-      result,
+      result
     );
   }
 
   protected notImplemented(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>,
+    result: L | Wrong<L, R>
   ): L {
     return this.sendFailure(req, res, StatusCodes.NOT_IMPLEMENTED, result);
   }
@@ -90,7 +90,7 @@ export abstract class Controller<L extends Error, R> {
   protected serviceUnavailable(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>,
+    result: L | Wrong<L, R>
   ): L {
     return this.sendFailure(req, res, StatusCodes.SERVICE_UNAVAILABLE, result);
   }
@@ -99,41 +99,42 @@ export abstract class Controller<L extends Error, R> {
     req: Request,
     res: Response,
     status: StatusCodes,
-    result: Right<L, R>,
+    result: Right<L, R>
   ): R | undefined {
-    const body = result?.value;
+    const response = result?.value;
 
     console.info(
-      `[${req.method}] ${
-        req.originalUrl
-      } - status: ${status} - body: ${JSON.stringify(body)}`,
+      `[${req.method}] ${req.originalUrl} - [${status}] body: ${JSON.stringify(
+        response
+      )}`
     );
 
-    res.status(status).send(body);
+    res.status(status).send(response);
 
-    return body;
+    return response;
   }
 
   private sendFailure(
     req: Request,
     res: Response,
     status: StatusCodes,
-    result: L | Wrong<L, R>,
+    result: L | Wrong<L, R>
   ): L {
-    const error = result instanceof Wrong ? result.value : result;
+    const response = result instanceof Wrong ? result.value : result;
+    const error = { name: response.name, message: response.message };
 
     console.error(
-      `[${req.method}] ${req.originalUrl} - status: ${status} - error: ${error}`,
+      `[${req.method}] ${req.originalUrl} - [${status}] error: ${error}`
     );
 
     res.status(status).send({
-      name: error.name,
+      name: response.name,
       message:
-        error.name === 'UnknownError'
+        response.name === 'UnknownError'
           ? 'Internal server error, please try again later or contact support'
-          : error.message,
+          : response.message,
     });
 
-    return error;
+    return response;
   }
 }

@@ -20,7 +20,7 @@ export class RefreshTokenUseCase extends UseCase<
 > {
   constructor(
     private readonly query: RefreshTokenQuery,
-    private readonly tokenService: TokenService,
+    private readonly tokenService: TokenService
   ) {
     super();
   }
@@ -34,7 +34,7 @@ export class RefreshTokenUseCase extends UseCase<
   }
 
   protected async execute(
-    input: Input,
+    input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
     const payload = this.tokenService.verifyToken(input.refreshToken);
 

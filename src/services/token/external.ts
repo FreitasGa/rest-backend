@@ -1,5 +1,5 @@
 import config from 'config';
-import { add, getTime } from 'date-fns';
+import { add } from 'date-fns';
 import jwt from 'jsonwebtoken';
 import ms from 'ms';
 import { v4 as uuid } from 'uuid';
@@ -13,7 +13,6 @@ export class JwtTokenService implements TokenService {
     algorithm: 'HS256',
     audience: 'rest.api',
     issuer: 'https://rest.gg',
-    notBefore: getTime(new Date()),
   };
 
   signToken<Type extends TokenType>(type: Type, payload: Payload[Type]): Token {
@@ -33,7 +32,6 @@ export class JwtTokenService implements TokenService {
       algorithm: this.options.algorithm,
       audience: this.options.audience,
       issuer: this.options.issuer,
-      notBefore: this.options.notBefore,
       expiresIn: expiresIn[type],
       jwtid: uuid(),
       header: {

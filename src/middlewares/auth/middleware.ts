@@ -9,7 +9,7 @@ import { InvalidTokenFormatError, TokenNotProvidedError } from './errors';
 
 async function tokenValidate(
   token: string,
-  service: TokenService,
+  service: TokenService
 ): Promise<AccessTokenPayload> {
   const tokenSections = token.split('.');
 
@@ -23,7 +23,7 @@ async function tokenValidate(
 export async function authMiddleware(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ): Promise<void> {
   const { authorization } = req.headers;
 

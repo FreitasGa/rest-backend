@@ -4,21 +4,18 @@ import { StatusCodes } from 'http-status-codes';
 export function routeNotFound(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ): void {
   const status = StatusCodes.NOT_FOUND;
   const error = { name: 'RouteNotFound', message: `Route not found` };
 
   console.error(
-    `[${req.method}] ${
-      req.originalUrl
-    } - status: ${status} - error: ${JSON.stringify(error)}`,
+    `[${req.method}] ${req.originalUrl} - [${status}] error: ${JSON.stringify(
+      error
+    )}`
   );
 
-  res.status(status).send({
-    code: status,
-    error,
-  });
+  res.status(status).send(error);
 
   next();
 }
@@ -27,15 +24,15 @@ export function errorHandler(
   req: Request,
   res: Response,
   status = StatusCodes.INTERNAL_SERVER_ERROR,
-  err: Error,
+  err: Error
 ): void {
   const error = { name: err.name, message: err.message };
 
   console.error(
-    `[${req.method}] ${req.originalUrl} - status: ${status} - error: ${error}`,
+    `[${req.method}] ${req.originalUrl} - [${status}] error: ${JSON.stringify(
+      error
+    )}`
   );
 
-  res.status(status).send({
-    error,
-  });
+  res.status(status).send(error);
 }

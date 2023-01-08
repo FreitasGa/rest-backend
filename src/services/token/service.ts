@@ -4,7 +4,7 @@ const TokenType = {
   RefreshToken: 'RefreshToken',
 } as const;
 
-export type TokenType = typeof TokenType[keyof typeof TokenType];
+export type TokenType = (typeof TokenType)[keyof typeof TokenType];
 
 export type AccessTokenPayload = {
   sub: string;

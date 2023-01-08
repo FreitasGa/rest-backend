@@ -22,7 +22,7 @@ export class SignInUseCase extends UseCase<
   constructor(
     private readonly query: SingInQuery,
     private readonly hashService: HashService,
-    private readonly tokenService: TokenService,
+    private readonly tokenService: TokenService
   ) {
     super();
   }
@@ -49,7 +49,7 @@ export class SignInUseCase extends UseCase<
   }
 
   protected async execute(
-    input: Input,
+    input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
     const user = await this.query.findUserByEmail(input.email);
 
@@ -63,7 +63,7 @@ export class SignInUseCase extends UseCase<
 
     const isValidPassword = await this.hashService.compare(
       input.password,
-      user.password,
+      user.password
     );
 
     if (!isValidPassword) {

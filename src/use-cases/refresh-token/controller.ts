@@ -13,7 +13,7 @@ import type { FailureOutput, SuccessOutput } from './use-case';
 
 type ErrorTypes = keyof typeof errors | 'InputValidationError' | 'UnknownError';
 
-@OvernightController('/refresh-token')
+@OvernightController('refresh-token')
 export class RefreshTokenController extends Controller<
   FailureOutput,
   SuccessOutput

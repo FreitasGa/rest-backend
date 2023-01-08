@@ -55,7 +55,9 @@ export class App extends OvernightServer {
     this.app.use(routeNotFound);
 
     console.info(
-      `Controllers: ${controllers.map((Controller) => Controller.name)}`
+      `Controllers: ${JSON.stringify(
+        controllers.map((Controller) => Controller.name)
+      )}`
     );
   }
 

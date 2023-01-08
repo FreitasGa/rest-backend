@@ -7,7 +7,7 @@ import { InvalidCredentialsError } from '../errors';
 import type {
   CreateUserInput,
   IncrementUserCounterInput,
-  SignUpMutation
+  SignUpMutation,
 } from '../mutation';
 import type { SignUpQuery } from '../query';
 import { SignUpUseCase, SuccessOutput } from '../use-case';
@@ -71,7 +71,7 @@ describe('SignUpUseCase', () => {
 
     expect(result.isWrong()).toBeTruthy();
     expect(result.value).toBeInstanceOf(InputValidationError);
-  })
+  });
 
   it('should fail with InvalidCredentialsError when user already exists', async () => {
     query.userExistsByEmail.mockResolvedValueOnce(true);

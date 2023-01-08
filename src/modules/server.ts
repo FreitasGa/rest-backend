@@ -32,7 +32,7 @@ export class HttpServerModule implements ServerModule {
     setTimeout(() => process.exit(1), 10 * 1000);
 
     this.sockets.forEach((socket) => socket.end());
-    
+
     setTimeout(
       () => this.sockets.forEach((socket) => socket.destroy()),
       5 * 1000
