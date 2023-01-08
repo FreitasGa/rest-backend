@@ -1,0 +1,53 @@
+version: '3.9'
+
+name: rest
+
+services:
+  backend:
+    container_name: rest-backend
+    image: rest-backend
+    build: .
+    ports:
+      - 3000:3000
+    networks:
+      - rest
+    depends_on:
+      - database
+      - cache
+    environment:
+      - NODE_ENV=development
+      - PORT
+      - TZ
+      - CORS_ORIGIN
+      - AUTH_SECRET
+      - AUTH_ACCESS_TOKEN_EXPIRES_IN
+      - AUTH_ID_TOKEN_EXPIRES_IN
+      - AUTH_REFRESH_TOKEN_EXPIRES_IN
+      - DATABASE_URL=postgresql://postgres:postgres@database:5432/rest?schema=public
+
+  database:
+    container_name: rest-database
+    image: postgres
+    ports:
+      - 5432:5432
+    networks:
+      - rest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=rest
+
+  cache:
+    container_name: rest-cache
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      - rest
+    command: 
+      - redis-server --requirepass "redis"
+      
+networks:
+  rest:
+    name: rest
+    driver: bridge

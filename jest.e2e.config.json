@@ -1,0 +1,29 @@
+{
+  "displayName": "E2E Tests",
+  "verbose": true,
+  "testEnvironment": "node",
+  "clearMocks": true,
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "testMatch": [
+    "<rootDir>/test/e2e/**/*.(spec|test).ts"
+  ],
+  "transform": {
+    "^.+\\.(t|j)s$": "@swc/jest"
+  },
+  "rootDir": ".",
+  "moduleNameMapper": {
+    "@core/(.*)": "<rootDir>/src/core/$1",
+    "@modules/(.*)": "<rootDir>/src/modules/$1",
+    "@entities/(.*)": "<rootDir>/src/entities/$1",
+    "@errors/(.*)": "<rootDir>/src/errors/$1",
+    "@middlewares/(.*)": "<rootDir>/src/middlewares/$1",
+    "@services/(.*)": "<rootDir>/src/services/$1",
+    "@templates/(.*)": "<rootDir>/src/templates/$1",
+    "@use-cases/(.*)": "<rootDir>/src/use-cases/$1",
+    "@utils/(.*)": "<rootDir>/src/utils/$1"
+  }
+}

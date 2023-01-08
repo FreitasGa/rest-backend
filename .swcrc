@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "dynamicImport": true,
+      "decorators": true
+    },
+    "target": "es2015",
+    "baseUrl": "./",
+    "paths": {
+      "@core/*": ["src/core/*"],
+      "@modules/*": ["src/modules/*"],
+      "@entities/*": ["src/entities/*"],
+      "@errors/*": ["src/errors/*"],
+      "@middlewares/*": ["src/middlewares/*"],
+      "@services/*": ["src/services/*"],
+      "@templates/*": ["src/templates/*"],
+      "@use-cases/*": ["src/use-cases/*"],
+      "@utils/*": ["src/utils/*"]
+    }
+  },
+  "module": {
+    "type": "es6"
+  }
+}

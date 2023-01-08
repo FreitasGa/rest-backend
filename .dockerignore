@@ -1,0 +1,22 @@
+# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+.env.*
+
+# Compiled files
+dist/
+
+# Coverage reports
+coverage/
+
+# IDE
+.idea/
+.vscode/
+
+# Github actions
+.github/
+
+# Git hooks
+.husky/
