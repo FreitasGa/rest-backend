@@ -65,15 +65,13 @@ export class SignUpUseCase extends UseCase<
 
     const hashedPassword = await this.hashService.hash(input.password);
 
-    const user = await this.mutation.createUser({
+    let user = await this.mutation.createUser({
       name: input.name,
       email: input.email,
       password: hashedPassword,
     });
 
-    await this.mutation.incrementUserCounter({
-      userId: user.id,
-    });
+    user = await this.mutation.incrementUserCounter({ userId: user.id });
 
     const code = this.otpService.generateCode({
       secret: user.secret,
@@ -81,12 +79,12 @@ export class SignUpUseCase extends UseCase<
     });
 
     await this.emailService.sendEmail({
-      to: input.email,
+      to: user.email,
       subject: 'Verify your email',
       template: 'verify-email',
       data: {
         code,
-        name: input.name,
+        name: user.name,
       },
     });
 

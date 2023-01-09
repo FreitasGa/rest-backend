@@ -26,7 +26,7 @@ class MockSignUpMutation implements SignUpMutation {
     async (_input: CreateUserInput): Promise<User> => createUser
   );
   incrementUserCounter = jest.fn(
-    async (_input: IncrementUserCounterInput): Promise<void> =>
+    async (_input: IncrementUserCounterInput): Promise<User> =>
       incrementUserCounter
   );
 }
@@ -53,6 +53,8 @@ describe('SignUpUseCase', () => {
 
   it('should succeed', async () => {
     query.userExistsByEmail.mockResolvedValueOnce(false);
+    mutation.createUser.mockResolvedValueOnce(createUser);
+    mutation.incrementUserCounter.mockResolvedValueOnce(incrementUserCounter);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -75,6 +77,8 @@ describe('SignUpUseCase', () => {
 
   it('should fail with InvalidCredentialsError when user already exists', async () => {
     query.userExistsByEmail.mockResolvedValueOnce(true);
+    mutation.createUser.mockResolvedValueOnce(createUser);
+    mutation.incrementUserCounter.mockResolvedValueOnce(incrementUserCounter);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
