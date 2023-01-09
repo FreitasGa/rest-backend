@@ -6,6 +6,9 @@
       "dynamicImport": true,
       "decorators": true
     },
+    "transform": {
+      "decoratorMetadata": true
+    },
     "target": "es2015",
     "baseUrl": "./",
     "paths": {
@@ -21,6 +24,9 @@
     }
   },
   "module": {
-    "type": "es6"
-  }
+    "type": "commonjs"
+  },
+  "exclude": [
+    "./spec/*"
+  ]
 }
