@@ -57,7 +57,7 @@ export class SignUpUseCase extends UseCase<
   protected async execute(
     input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
-    const userExists = await this.query.userExistsByEmail(input.email);
+    const userExists = await this.query.userExists(input.email);
 
     if (userExists) {
       return wrong(new InvalidCredentialsError());
@@ -71,7 +71,7 @@ export class SignUpUseCase extends UseCase<
       password: hashedPassword,
     });
 
-    user = await this.mutation.incrementUserCounterById(user.id);
+    user = await this.mutation.incrementUserCounter(user.id);
 
     const code = this.otpService.generateCode({
       secret: user.secret,

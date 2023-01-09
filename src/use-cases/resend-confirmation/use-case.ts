@@ -49,13 +49,13 @@ export class ResendConfirmationUseCase extends UseCase<
   protected async execute(
     input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
-    let user = await this.query.getUserByEmail(input.email);
+    let user = await this.query.getUser(input.email);
 
     if (!user) {
       return wrong(new UserNotFoundError());
     }
 
-    user = await this.mutation.incrementUserCounterById(user.id);
+    user = await this.mutation.incrementUserCounter(user.id);
 
     const code = this.otpService.generateCode({
       secret: user.secret,

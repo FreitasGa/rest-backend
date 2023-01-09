@@ -1,1 +1,1 @@
-export const userExistsByEmail = false;
+export const userExists = false;

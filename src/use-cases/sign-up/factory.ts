@@ -11,7 +11,7 @@ export async function buildUseCase(): Promise<SignUpUseCase> {
   const mutation = new PrismaSignUpMutation(prisma);
   const hashService = new BcryptHashService();
   const optService = new HotpOtpService();
-  const emailService = new MockEmailService();
+  const emailService = new MockEmailService(); // TODO: change to real email service
 
   return new SignUpUseCase(
     query,

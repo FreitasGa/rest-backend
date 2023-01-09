@@ -3,7 +3,11 @@ import type { Prisma } from '@prisma/client';
 import type { User } from '@entities/user';
 
 export interface ResendConfirmationMutation {
-  incrementUserCounterById(id: string): Promise<User>;
+  /**
+   * Increment user counter
+   * @param id user id
+   */
+  incrementUserCounter(id: string): Promise<User>;
 }
 
 export class PrismaResendConfirmationMutation
@@ -11,7 +15,7 @@ export class PrismaResendConfirmationMutation
 {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
-  incrementUserCounterById(id: string): Promise<User> {
+  incrementUserCounter(id: string): Promise<User> {
     return this.prisma.user.update({
       where: {
         id,

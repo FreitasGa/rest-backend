@@ -49,7 +49,7 @@ export class ValidateEmailUseCase extends UseCase<
   protected async execute(
     input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
-    const user = await this.query.getUserByEmail(input.email);
+    const user = await this.query.getUser(input.email);
 
     if (!user) {
       return wrong(new UserNotFoundError());
@@ -65,7 +65,7 @@ export class ValidateEmailUseCase extends UseCase<
       return wrong(new InvalidCodeError());
     }
 
-    await this.mutation.confirmUserById(user.id);
+    await this.mutation.confirmUser(user.id);
 
     return right(undefined);
   }

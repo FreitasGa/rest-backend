@@ -8,12 +8,10 @@ import { InvalidCredentialsError } from '../errors';
 import type { SingInQuery } from '../query';
 import { SignInUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
-import { getUserByEmail } from './fixtures/query';
+import { getUser } from './fixtures/query';
 
 class MockSignInQuery implements SingInQuery {
-  getUserByEmail = jest.fn(
-    async (_email: string): Promise<User | null> => getUserByEmail
-  );
+  getUser = jest.fn(async (_email: string): Promise<User | null> => getUser);
 }
 
 const query = new MockSignInQuery();
@@ -29,7 +27,7 @@ describe('SignInUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
-    query.getUserByEmail.mockResolvedValueOnce(getUserByEmail);
+    query.getUser.mockResolvedValueOnce(getUser);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -50,7 +48,7 @@ describe('SignInUseCase', () => {
   });
 
   it('should fail with InvalidCredentialsError when user not found', async () => {
-    query.getUserByEmail.mockResolvedValueOnce(null);
+    query.getUser.mockResolvedValueOnce(null);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -60,8 +58,8 @@ describe('SignInUseCase', () => {
   });
 
   it('should fail with InvalidCredentialsError when user is blocked', async () => {
-    query.getUserByEmail.mockResolvedValueOnce({
-      ...getUserByEmail,
+    query.getUser.mockResolvedValueOnce({
+      ...getUser,
       blockedTill: addDays(new Date(), 1),
     });
 
@@ -73,7 +71,7 @@ describe('SignInUseCase', () => {
   });
 
   it('should fail with InvalidCredentialsError when password is invalid', async () => {
-    query.getUserByEmail.mockResolvedValueOnce(getUserByEmail);
+    query.getUser.mockResolvedValueOnce(getUser);
 
     const useCase = await buildUseCase();
     const result = await useCase.run({

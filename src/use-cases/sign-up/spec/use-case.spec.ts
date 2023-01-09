@@ -8,21 +8,19 @@ import type { CreateUserInput, SignUpMutation } from '../mutation';
 import type { SignUpQuery } from '../query';
 import { SignUpUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
-import { createUser, incrementUserCounterById } from './fixtures/mutation';
-import { userExistsByEmail } from './fixtures/query';
+import { createUser, incrementUserCounter } from './fixtures/mutation';
+import { userExists } from './fixtures/query';
 
 class MockSignUpQuery implements SignUpQuery {
-  userExistsByEmail = jest.fn(
-    async (_email: string): Promise<boolean> => userExistsByEmail
-  );
+  userExists = jest.fn(async (_email: string): Promise<boolean> => userExists);
 }
 
 class MockSignUpMutation implements SignUpMutation {
   createUser = jest.fn(
     async (_input: CreateUserInput): Promise<User> => createUser
   );
-  incrementUserCounterById = jest.fn(
-    async (_id: string): Promise<User> => incrementUserCounterById
+  incrementUserCounter = jest.fn(
+    async (_id: string): Promise<User> => incrementUserCounter
   );
 }
 
@@ -47,11 +45,9 @@ describe('SignUpUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
-    query.userExistsByEmail.mockResolvedValueOnce(false);
+    query.userExists.mockResolvedValueOnce(false);
     mutation.createUser.mockResolvedValueOnce(createUser);
-    mutation.incrementUserCounterById.mockResolvedValueOnce(
-      incrementUserCounterById
-    );
+    mutation.incrementUserCounter.mockResolvedValueOnce(incrementUserCounter);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -73,11 +69,9 @@ describe('SignUpUseCase', () => {
   });
 
   it('should fail with InvalidCredentialsError when user already exists', async () => {
-    query.userExistsByEmail.mockResolvedValueOnce(true);
+    query.userExists.mockResolvedValueOnce(true);
     mutation.createUser.mockResolvedValueOnce(createUser);
-    mutation.incrementUserCounterById.mockResolvedValueOnce(
-      incrementUserCounterById
-    );
+    mutation.incrementUserCounter.mockResolvedValueOnce(incrementUserCounter);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);

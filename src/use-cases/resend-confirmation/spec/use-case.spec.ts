@@ -7,18 +7,16 @@ import type { ResendConfirmationMutation } from '../mutation';
 import type { ResendConfirmationQuery } from '../query';
 import { ResendConfirmationUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
-import { incrementUserCounterById } from './fixtures/mutation';
-import { getUserByEmail } from './fixtures/query';
+import { incrementUserCounter } from './fixtures/mutation';
+import { getUser } from './fixtures/query';
 
 class MockResendConfirmationQuery implements ResendConfirmationQuery {
-  getUserByEmail = jest.fn(
-    async (_email: string): Promise<User | null> => getUserByEmail
-  );
+  getUser = jest.fn(async (_email: string): Promise<User | null> => getUser);
 }
 
 class MockResendConfirmationMutation implements ResendConfirmationMutation {
-  incrementUserCounterById = jest.fn(
-    async (_id: string): Promise<User> => incrementUserCounterById
+  incrementUserCounter = jest.fn(
+    async (_id: string): Promise<User> => incrementUserCounter
   );
 }
 
@@ -41,10 +39,8 @@ describe('ResendConfirmationUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
-    query.getUserByEmail.mockResolvedValueOnce(getUserByEmail);
-    mutation.incrementUserCounterById.mockResolvedValueOnce(
-      incrementUserCounterById
-    );
+    query.getUser.mockResolvedValueOnce(getUser);
+    mutation.incrementUserCounter.mockResolvedValueOnce(incrementUserCounter);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -64,10 +60,8 @@ describe('ResendConfirmationUseCase', () => {
   });
 
   it('should fail with UserNotFoundError when user not found', async () => {
-    query.getUserByEmail.mockResolvedValueOnce(null);
-    mutation.incrementUserCounterById.mockResolvedValueOnce(
-      incrementUserCounterById
-    );
+    query.getUser.mockResolvedValueOnce(null);
+    mutation.incrementUserCounter.mockResolvedValueOnce(incrementUserCounter);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);

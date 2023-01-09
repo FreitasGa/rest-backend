@@ -6,16 +6,14 @@ import type { ValidateEmailMutation } from '../mutation';
 import type { ValidateEmailQuery } from '../query';
 import { SuccessOutput, ValidateEmailUseCase } from '../use-case';
 import { input, output } from './fixtures/dtos';
-import { getUserByEmail } from './fixtures/query';
+import { getUser } from './fixtures/query';
 
 class ValidateEmailQueryMock implements ValidateEmailQuery {
-  getUserByEmail = jest.fn(
-    async (_email: string): Promise<User | null> => getUserByEmail
-  );
+  getUser = jest.fn(async (_email: string): Promise<User | null> => getUser);
 }
 
 class ValidateEmailMutationMock implements ValidateEmailMutation {
-  confirmUserById = jest.fn(async (_id: string): Promise<void> => undefined);
+  confirmUser = jest.fn(async (_id: string): Promise<void> => undefined);
 }
 
 const query = new ValidateEmailQueryMock();
@@ -31,8 +29,8 @@ describe('ValidateEmailUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
-    query.getUserByEmail.mockResolvedValueOnce(getUserByEmail);
-    mutation.confirmUserById.mockResolvedValueOnce(undefined);
+    query.getUser.mockResolvedValueOnce(getUser);
+    mutation.confirmUser.mockResolvedValueOnce(undefined);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -53,8 +51,8 @@ describe('ValidateEmailUseCase', () => {
   });
 
   it('should fail with UserNotFoundError when user not found', async () => {
-    query.getUserByEmail.mockResolvedValueOnce(null);
-    mutation.confirmUserById.mockResolvedValueOnce(undefined);
+    query.getUser.mockResolvedValueOnce(null);
+    mutation.confirmUser.mockResolvedValueOnce(undefined);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -64,8 +62,8 @@ describe('ValidateEmailUseCase', () => {
   });
 
   it('should fail with InvalidCodeError when code is invalid', async () => {
-    query.getUserByEmail.mockResolvedValueOnce(getUserByEmail);
-    mutation.confirmUserById.mockResolvedValueOnce(undefined);
+    query.getUser.mockResolvedValueOnce(getUser);
+    mutation.confirmUser.mockResolvedValueOnce(undefined);
 
     const useCase = await buildUseCase();
     const result = await useCase.run({

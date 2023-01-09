@@ -38,7 +38,7 @@ export class RefreshTokenUseCase extends UseCase<
   ): Promise<Either<FailureOutput, SuccessOutput>> {
     const payload = this.tokenService.verifyToken(input.refreshToken);
 
-    const user = await this.query.getUserById(payload.sub);
+    const user = await this.query.getUser(payload.sub);
 
     if (!user) {
       return wrong(new UserNotFoundError());

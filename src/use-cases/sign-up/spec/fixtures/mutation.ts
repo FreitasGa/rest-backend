@@ -14,7 +14,7 @@ export const createUser = new User({
   deletedAt: null,
 });
 
-export const incrementUserCounterById = new User({
+export const incrementUserCounter = new User({
   id: '1',
   name: 'John Doe',
   email: 'john@doe.com',
