@@ -42,7 +42,9 @@ export class App extends OvernightServer {
   }
 
   private async setupControllers(): Promise<void> {
-    const files = await glob(`${__dirname}/use-cases/**/controller.[t|j]s`);
+    const files = await glob(`${__dirname}/use-cases/**/controller.[t|j]s`, {
+      absolute: true,
+    });
 
     const controllers = await Promise.all(
       files.map(async (file) => {
