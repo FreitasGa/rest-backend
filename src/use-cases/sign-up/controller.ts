@@ -6,10 +6,9 @@ import type { Request, Response } from 'express';
 
 import { Controller } from '@core/controller';
 import { ApplicationError } from '@errors/application-error';
-import type { SignUpInputDto } from './dtos';
 import type * as errors from './errors';
-import { buildSignUpUseCase } from './factory';
-import type { FailureOutput, SuccessOutput } from './use-case';
+import { buildUseCase } from './factory';
+import type { FailureOutput, Input, SuccessOutput } from './use-case';
 
 type ErrorTypes = keyof typeof errors | 'InputValidationError' | 'UnknownError';
 
@@ -20,8 +19,8 @@ export class SignUpController extends Controller<FailureOutput, SuccessOutput> {
     req: Request,
     res: Response
   ): Promise<SuccessOutput | FailureOutput | undefined> {
-    const useCase = await buildSignUpUseCase();
-    const result = await useCase.run(req.body as SignUpInputDto);
+    const useCase = await buildUseCase();
+    const result = await useCase.run(req.body as Input);
 
     if (result.isWrong()) {
       const error = result.value;

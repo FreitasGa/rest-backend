@@ -4,7 +4,7 @@ import { JwtTokenService } from '@services/token/external';
 import { PrismaSingInQuery } from './query';
 import { SignInUseCase } from './use-case';
 
-export async function buildSignInUseCase(): Promise<SignInUseCase> {
+export async function buildUseCase(): Promise<SignInUseCase> {
   const query = new PrismaSingInQuery(prisma);
   const hashService = new BcryptHashService();
   const tokenService = new JwtTokenService();

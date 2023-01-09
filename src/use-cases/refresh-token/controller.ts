@@ -6,10 +6,9 @@ import type { Request, Response } from 'express';
 
 import { Controller } from '@core/controller';
 import { ApplicationError } from '@errors/application-error';
-import type { RefreshTokenInputDto } from './dtos';
 import type * as errors from './errors';
-import { buildRefreshTokenUseCase } from './factory';
-import type { FailureOutput, SuccessOutput } from './use-case';
+import { buildUseCase } from './factory';
+import type { FailureOutput, Input, SuccessOutput } from './use-case';
 
 type ErrorTypes = keyof typeof errors | 'InputValidationError' | 'UnknownError';
 
@@ -23,8 +22,8 @@ export class RefreshTokenController extends Controller<
     req: Request,
     res: Response
   ): Promise<SuccessOutput | FailureOutput | undefined> {
-    const useCase = await buildRefreshTokenUseCase();
-    const result = await useCase.run(req.body as RefreshTokenInputDto);
+    const useCase = await buildUseCase();
+    const result = await useCase.run(req.body as Input);
 
     if (result.isWrong()) {
       const error = result.value;

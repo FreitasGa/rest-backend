@@ -6,7 +6,7 @@ import { PrismaSignUpMutation } from './mutation';
 import { PrismaSignUpQuery } from './query';
 import { SignUpUseCase } from './use-case';
 
-export async function buildSignUpUseCase(): Promise<SignUpUseCase> {
+export async function buildUseCase(): Promise<SignUpUseCase> {
   const query = new PrismaSignUpQuery(prisma);
   const mutation = new PrismaSignUpMutation(prisma);
   const hashService = new BcryptHashService();
