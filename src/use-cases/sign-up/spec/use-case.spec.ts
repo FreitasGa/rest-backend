@@ -15,13 +15,13 @@ import { input, output } from './fixtures/dtos';
 import { createUser, incrementUserCounter } from './fixtures/mutation';
 import { userExistsByEmail } from './fixtures/query';
 
-class SignUpQueryMock implements SignUpQuery {
+class MockSignUpQuery implements SignUpQuery {
   userExistsByEmail = jest.fn(
     async (_email: string): Promise<boolean> => userExistsByEmail
   );
 }
 
-class SignUpMutationMock implements SignUpMutation {
+class MockSignUpMutation implements SignUpMutation {
   createUser = jest.fn(
     async (_input: CreateUserInput): Promise<User> => createUser
   );
@@ -31,8 +31,8 @@ class SignUpMutationMock implements SignUpMutation {
   );
 }
 
-const query = new SignUpQueryMock();
-const mutation = new SignUpMutationMock();
+const query = new MockSignUpQuery();
+const mutation = new MockSignUpMutation();
 
 async function buildUseCase() {
   const hashService = new MockHashService();

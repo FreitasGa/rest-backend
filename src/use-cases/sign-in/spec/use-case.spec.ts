@@ -10,13 +10,13 @@ import { SignInUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
 import { findUserByEmail } from './fixtures/query';
 
-class SignInQueryMock implements SingInQuery {
+class MockSignInQuery implements SingInQuery {
   findUserByEmail = jest.fn(
     async (_email: string): Promise<User | null> => findUserByEmail
   );
 }
 
-const query = new SignInQueryMock();
+const query = new MockSignInQuery();
 
 async function buildUseCase() {
   const hashService = new MockHashService();

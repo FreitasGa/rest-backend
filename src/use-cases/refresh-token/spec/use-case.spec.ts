@@ -6,13 +6,13 @@ import { RefreshTokenUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
 import { findUserById } from './fixtures/query';
 
-class RefreshTokenQueryMock implements RefreshTokenQuery {
+class MockRefreshTokenQuery implements RefreshTokenQuery {
   getUserById = jest.fn(
     async (_id: string): Promise<User | null> => findUserById
   );
 }
 
-const query = new RefreshTokenQueryMock();
+const query = new MockRefreshTokenQuery();
 
 async function buildUseCase() {
   const tokenService = new MockTokenService();
