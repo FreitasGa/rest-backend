@@ -4,11 +4,7 @@ import { MockEmailService } from '@services/email/mock';
 import { MockHashService } from '@services/hash/mock';
 import { MockOtpService } from '@services/otp/mock';
 import { InvalidCredentialsError } from '../errors';
-import type {
-  CreateUserInput,
-  IncrementUserCounterInput,
-  SignUpMutation,
-} from '../mutation';
+import type { CreateUserInput, SignUpMutation } from '../mutation';
 import type { SignUpQuery } from '../query';
 import { SignUpUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
@@ -26,8 +22,7 @@ class MockSignUpMutation implements SignUpMutation {
     async (_input: CreateUserInput): Promise<User> => createUser
   );
   incrementUserCounter = jest.fn(
-    async (_input: IncrementUserCounterInput): Promise<User> =>
-      incrementUserCounter
+    async (_userId: string): Promise<User> => incrementUserCounter
   );
 }
 
