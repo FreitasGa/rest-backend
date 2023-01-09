@@ -4,7 +4,7 @@ import type { ApplicationError } from '@errors/application-error';
 import type { BusinessError } from '@errors/business-error';
 import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
-import { EmailService, EmailTemplate } from '@services/email/service';
+import type { EmailService } from '@services/email/service';
 import type { HashService } from '@services/hash/service';
 import type { OtpService } from '@services/otp/service';
 import type { SignUpInputDto, SignUpOutputDto } from './dtos';
@@ -83,7 +83,7 @@ export class SignUpUseCase extends UseCase<
     await this.emailService.sendEmail({
       to: input.email,
       subject: 'Verify your email',
-      template: EmailTemplate.VerifyEmail,
+      template: 'verify-email',
       data: {
         code,
         name: input.name,

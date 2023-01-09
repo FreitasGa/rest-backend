@@ -1,8 +1,10 @@
 import type { Attachment } from 'nodemailer/lib/mailer';
 
-export enum EmailTemplate {
-  VerifyEmail = 'verify-email',
-}
+const EmailTemplate = {
+  VerifyEmail: 'verify-email',
+} as const;
+
+export type EmailTemplate = (typeof EmailTemplate)[keyof typeof EmailTemplate];
 
 export type EmailTemplateData = {
   [EmailTemplate.VerifyEmail]: {
