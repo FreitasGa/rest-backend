@@ -51,7 +51,7 @@ export class SignInUseCase extends UseCase<
   protected async execute(
     input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
-    const user = await this.query.findUserByEmail(input.email);
+    const user = await this.query.getUserByEmail(input.email);
 
     if (!user) {
       return wrong(new InvalidCredentialsError());

@@ -15,7 +15,7 @@ class ValidateEmailQueryMock implements ValidateEmailQuery {
 
 class ValidateEmailMutationMock implements ValidateEmailMutation {
   confirmUserById = jest.fn(
-    async (_userId: string): Promise<void> => undefined
+    async (_id: string): Promise<void> => undefined
   );
 }
 

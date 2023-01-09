@@ -8,13 +8,9 @@ export type CreateUserInput = {
   password: string;
 };
 
-export type IncrementUserCounterInput = {
-  userId: string;
-};
-
 export interface SignUpMutation {
   createUser(input: CreateUserInput): Promise<User>;
-  incrementUserCounter(userId: string): Promise<User>;
+  incrementUserCounterById(id: string): Promise<User>;
 }
 
 export class PrismaSignUpMutation implements SignUpMutation {
@@ -32,10 +28,10 @@ export class PrismaSignUpMutation implements SignUpMutation {
     return user;
   }
 
-  async incrementUserCounter(userId: string): Promise<User> {
+  async incrementUserCounterById(id: string): Promise<User> {
     const user = await this.prisma.user.update({
       where: {
-        id: userId,
+        id,
       },
       data: {
         counter: {

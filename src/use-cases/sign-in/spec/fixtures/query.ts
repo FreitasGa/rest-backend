@@ -1,6 +1,6 @@
 import { User } from '@entities/user';
 
-export const findUserByEmail = new User({
+export const getUserByEmail = new User({
   id: '1',
   name: 'John Doe',
   email: 'john@doe.com',

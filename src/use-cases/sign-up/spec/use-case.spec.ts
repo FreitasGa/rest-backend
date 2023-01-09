@@ -8,7 +8,7 @@ import type { CreateUserInput, SignUpMutation } from '../mutation';
 import type { SignUpQuery } from '../query';
 import { SignUpUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
-import { createUser, incrementUserCounter } from './fixtures/mutation';
+import { createUser, incrementUserCounterById } from './fixtures/mutation';
 import { userExistsByEmail } from './fixtures/query';
 
 class MockSignUpQuery implements SignUpQuery {
@@ -21,8 +21,8 @@ class MockSignUpMutation implements SignUpMutation {
   createUser = jest.fn(
     async (_input: CreateUserInput): Promise<User> => createUser
   );
-  incrementUserCounter = jest.fn(
-    async (_userId: string): Promise<User> => incrementUserCounter
+  incrementUserCounterById = jest.fn(
+    async (_id: string): Promise<User> => incrementUserCounterById
   );
 }
 
@@ -49,7 +49,9 @@ describe('SignUpUseCase', () => {
   it('should succeed', async () => {
     query.userExistsByEmail.mockResolvedValueOnce(false);
     mutation.createUser.mockResolvedValueOnce(createUser);
-    mutation.incrementUserCounter.mockResolvedValueOnce(incrementUserCounter);
+    mutation.incrementUserCounterById.mockResolvedValueOnce(
+      incrementUserCounterById
+    );
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -73,7 +75,9 @@ describe('SignUpUseCase', () => {
   it('should fail with InvalidCredentialsError when user already exists', async () => {
     query.userExistsByEmail.mockResolvedValueOnce(true);
     mutation.createUser.mockResolvedValueOnce(createUser);
-    mutation.incrementUserCounter.mockResolvedValueOnce(incrementUserCounter);
+    mutation.incrementUserCounterById.mockResolvedValueOnce(
+      incrementUserCounterById
+    );
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);

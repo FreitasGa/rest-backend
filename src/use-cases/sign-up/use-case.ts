@@ -71,7 +71,7 @@ export class SignUpUseCase extends UseCase<
       password: hashedPassword,
     });
 
-    user = await this.mutation.incrementUserCounter(user.id);
+    user = await this.mutation.incrementUserCounterById(user.id);
 
     const code = this.otpService.generateCode({
       secret: user.secret,

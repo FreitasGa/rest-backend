@@ -4,11 +4,11 @@ import { UserNotFoundError } from '../errors';
 import type { RefreshTokenQuery } from '../query';
 import { RefreshTokenUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
-import { findUserById } from './fixtures/query';
+import { getUserById } from './fixtures/query';
 
 class MockRefreshTokenQuery implements RefreshTokenQuery {
   getUserById = jest.fn(
-    async (_id: string): Promise<User | null> => findUserById
+    async (_id: string): Promise<User | null> => getUserById
   );
 }
 
@@ -24,7 +24,7 @@ describe('RefreshTokenUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
-    query.getUserById.mockResolvedValueOnce(findUserById);
+    query.getUserById.mockResolvedValueOnce(getUserById);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
