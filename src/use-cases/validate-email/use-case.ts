@@ -37,6 +37,12 @@ export class ValidateEmailUseCase extends UseCase<
       return wrong(new InputValidationError());
     }
 
+    const emilRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+    if (!emilRegex.test(input.email)) {
+      return wrong(new InputValidationError());
+    }
+
     return right(undefined);
   }
 

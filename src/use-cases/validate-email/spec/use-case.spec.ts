@@ -1,4 +1,5 @@
 import type { User } from '@entities/user';
+import { InputValidationError } from '@errors/input-validation-error';
 import { MockOtpService } from '@services/otp/mock';
 import { InvalidCodeError, UserNotFoundError } from '../errors';
 import type { ValidateEmailMutation } from '../mutation';
@@ -14,9 +15,7 @@ class ValidateEmailQueryMock implements ValidateEmailQuery {
 }
 
 class ValidateEmailMutationMock implements ValidateEmailMutation {
-  confirmUserById = jest.fn(
-    async (_id: string): Promise<void> => undefined
-  );
+  confirmUserById = jest.fn(async (_id: string): Promise<void> => undefined);
 }
 
 const query = new ValidateEmailQueryMock();
@@ -40,6 +39,17 @@ describe('ValidateEmailUseCase', () => {
 
     expect(result.isRight()).toBeTruthy();
     expect(result.value).toEqual<SuccessOutput>(output);
+  });
+
+  it('should fail with InputValidationError when input is invalid', async () => {
+    const useCase = await buildUseCase();
+    const result = await useCase.run({
+      ...input,
+      email: 'invalid_email',
+    });
+
+    expect(result.isWrong()).toBeTruthy();
+    expect(result.value).toBeInstanceOf(InputValidationError);
   });
 
   it('should fail with UserNotFoundError when user not found', async () => {
