@@ -62,7 +62,6 @@ describe('ValidateEmailUseCase', () => {
       ...input,
       code: 'invalid_code',
     });
-    console.log(result);
 
     expect(result.isWrong()).toBeTruthy();
     expect(result.value).toBeInstanceOf(InvalidCodeError);
