@@ -1,5 +1,5 @@
 import type { User } from '@entities/user';
-import { JwtTokenService } from '@services/token/external';
+import { MockTokenService } from '@services/token/mock';
 import { UserNotFoundError } from '../errors';
 import type { RefreshTokenQuery } from '../query';
 import { RefreshTokenUseCase, SuccessOutput } from '../use-case';
@@ -15,7 +15,7 @@ class RefreshTokenQueryMock implements RefreshTokenQuery {
 const query = new RefreshTokenQueryMock();
 
 async function buildUseCase() {
-  const tokenService = new JwtTokenService();
+  const tokenService = new MockTokenService();
 
   return new RefreshTokenUseCase(query, tokenService);
 }

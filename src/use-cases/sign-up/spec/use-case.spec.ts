@@ -1,8 +1,8 @@
 import type { User } from '@entities/user';
 import { InputValidationError } from '@errors/input-validation-error';
 import { MockEmailService } from '@services/email/mock';
-import { BcryptHashService } from '@services/hash/external';
-import { HotpOtpService } from '@services/otp/external';
+import { MockHashService } from '@services/hash/mock';
+import { MockOtpService } from '@services/otp/mock';
 import { InvalidCredentialsError } from '../errors';
 import type {
   CreateUserInput,
@@ -35,8 +35,8 @@ const query = new SignUpQueryMock();
 const mutation = new SignUpMutationMock();
 
 async function buildUseCase() {
-  const hashService = new BcryptHashService();
-  const otpService = new HotpOtpService();
+  const hashService = new MockHashService();
+  const otpService = new MockOtpService();
   const emailService = new MockEmailService();
 
   return new SignUpUseCase(

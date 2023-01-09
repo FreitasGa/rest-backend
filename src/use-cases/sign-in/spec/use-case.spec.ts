@@ -2,8 +2,8 @@ import { addDays } from 'date-fns';
 
 import type { User } from '@entities/user';
 import { InputValidationError } from '@errors/input-validation-error';
-import { BcryptHashService } from '@services/hash/external';
-import { JwtTokenService } from '@services/token/external';
+import { MockHashService } from '@services/hash/mock';
+import { MockTokenService } from '@services/token/mock';
 import { InvalidCredentialsError } from '../errors';
 import type { SingInQuery } from '../query';
 import { SignInUseCase, SuccessOutput } from '../use-case';
@@ -19,8 +19,8 @@ class SignInQueryMock implements SingInQuery {
 const query = new SignInQueryMock();
 
 async function buildUseCase() {
-  const hashService = new BcryptHashService();
-  const tokenService = new JwtTokenService();
+  const hashService = new MockHashService();
+  const tokenService = new MockTokenService();
 
   return new SignInUseCase(query, hashService, tokenService);
 }
