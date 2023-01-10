@@ -6,7 +6,10 @@ import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
 import type { EmailService } from '@services/email/service';
 import type { OtpService } from '@services/otp/service';
-import type { ResendEmailConfirmationInput, ResendEmailConfirmationOutput } from './dtos';
+import type {
+  ResendEmailConfirmationInput,
+  ResendEmailConfirmationOutput,
+} from './dtos';
 import { UserNotFoundError } from './errors';
 import type { ResendEmailConfirmationMutation } from './mutation';
 import type { ResendEmailConfirmationQuery } from './query';

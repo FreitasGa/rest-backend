@@ -10,7 +10,9 @@ export interface ResendEmailConfirmationQuery {
   getUser(email: string): Promise<User | null>;
 }
 
-export class PrismaResendEmailConfirmationQuery implements ResendEmailConfirmationQuery {
+export class PrismaResendEmailConfirmationQuery
+  implements ResendEmailConfirmationQuery
+{
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async getUser(email: string): Promise<User | null> {

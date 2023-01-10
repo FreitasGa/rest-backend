@@ -14,7 +14,9 @@ class MockResendEmailConfirmationQuery implements ResendEmailConfirmationQuery {
   getUser = jest.fn(async (_email: string): Promise<User | null> => getUser);
 }
 
-class MockResendEmailConfirmationMutation implements ResendEmailConfirmationMutation {
+class MockResendEmailConfirmationMutation
+  implements ResendEmailConfirmationMutation
+{
   incrementUserCounter = jest.fn(
     async (_id: string): Promise<User> => incrementUserCounter
   );
