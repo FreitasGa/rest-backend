@@ -8,16 +8,16 @@ import { SuccessOutput, ValidateEmailUseCase } from '../use-case';
 import { input, output } from './fixtures/dtos';
 import { getUser } from './fixtures/query';
 
-class ValidateEmailQueryMock implements ValidateEmailQuery {
+class MockValidateEmailQuery implements ValidateEmailQuery {
   getUser = jest.fn(async (_email: string): Promise<User | null> => getUser);
 }
 
-class ValidateEmailMutationMock implements ValidateEmailMutation {
+class MockValidateEmailMutation implements ValidateEmailMutation {
   confirmUser = jest.fn(async (_id: string): Promise<void> => undefined);
 }
 
-const query = new ValidateEmailQueryMock();
-const mutation = new ValidateEmailMutationMock();
+const query = new MockValidateEmailQuery();
+const mutation = new MockValidateEmailMutation();
 
 async function buildUseCase() {
   const otpService = new MockOtpService();
