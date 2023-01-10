@@ -1,8 +1,8 @@
-export type RefreshTokenInputDto = {
+export type RefreshTokenInput = {
   refreshToken: string;
 };
 
-export type RefreshTokenOutputDto = {
+export type RefreshTokenOutput = {
   accessToken: {
     token: string;
     expiresAt: number;

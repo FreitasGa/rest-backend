@@ -1,13 +1,13 @@
 import { hotp } from 'otplib';
 
-import type { CheckCodeInput, GenerateCodeInput, OtpService } from './service';
+import type { OtpService } from './service';
 
 export class HotpOtpService implements OtpService {
-  generateCode(input: GenerateCodeInput): string {
-    return hotp.generate(input.secret, input.counter);
+  generateCode(secret: string, counter: number): string {
+    return hotp.generate(secret, counter);
   }
 
-  checkCode(input: CheckCodeInput): boolean {
-    return hotp.check(input.code, input.secret, input.counter);
+  checkCode(code: string, secret: string, counter: number): boolean {
+    return hotp.check(code, secret, counter);
   }
 }

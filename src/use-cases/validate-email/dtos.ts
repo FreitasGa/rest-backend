@@ -1,6 +1,6 @@
-export type ValidateEmailInputDto = {
+export type ValidateEmailInput = {
   email: string;
   code: string;
 };
 
-export type ValidateEmailOutputDto = void;
+export type ValidateEmailOutput = void;

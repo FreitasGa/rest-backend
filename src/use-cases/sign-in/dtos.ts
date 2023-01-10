@@ -1,9 +1,9 @@
-export type SignInInputDto = {
+export type SignInInput = {
   email: string;
   password: string;
 };
 
-export type SignInOutputDto = {
+export type SignInOutput = {
   accessToken: {
     token: string;
     expiresAt: number;

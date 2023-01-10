@@ -5,14 +5,14 @@ import type { BusinessError } from '@errors/business-error';
 import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
 import type { OtpService } from '@services/otp/service';
-import type { ValidateEmailInputDto, ValidateEmailOutputDto } from './dtos';
+import type { ValidateEmailInput, ValidateEmailOutput } from './dtos';
 import { InvalidCodeError, UserNotFoundError } from './errors';
 import type { ValidateEmailMutation } from './mutation';
 import type { ValidateEmailQuery } from './query';
 
-export type Input = ValidateEmailInputDto;
+export type Input = ValidateEmailInput;
 export type FailureOutput = BusinessError | ApplicationError | UnknownError;
-export type SuccessOutput = ValidateEmailOutputDto;
+export type SuccessOutput = ValidateEmailOutput;
 
 export class ValidateEmailUseCase extends UseCase<
   Input,
@@ -55,11 +55,11 @@ export class ValidateEmailUseCase extends UseCase<
       return wrong(new UserNotFoundError());
     }
 
-    const isCodeValid = this.otpService.checkCode({
-      code: input.code,
-      counter: user.counter,
-      secret: user.secret,
-    });
+    const isCodeValid = this.otpService.checkCode(
+      input.code,
+      user.secret,
+      user.counter
+    );
 
     if (!isCodeValid) {
       return wrong(new InvalidCodeError());

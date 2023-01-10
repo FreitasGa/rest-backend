@@ -7,14 +7,14 @@ import type { UnknownError } from '@errors/unknown-error';
 import type { EmailService } from '@services/email/service';
 import type { HashService } from '@services/hash/service';
 import type { OtpService } from '@services/otp/service';
-import type { SignUpInputDto, SignUpOutputDto } from './dtos';
+import type { SignUpInput, SignUpOutput } from './dtos';
 import { InvalidCredentialsError } from './errors';
 import type { SignUpMutation } from './mutation';
 import type { SignUpQuery } from './query';
 
-export type Input = SignUpInputDto;
+export type Input = SignUpInput;
 export type FailureOutput = BusinessError | UnknownError | ApplicationError;
-export type SuccessOutput = SignUpOutputDto;
+export type SuccessOutput = SignUpOutput;
 
 export class SignUpUseCase extends UseCase<
   Input,
@@ -73,10 +73,7 @@ export class SignUpUseCase extends UseCase<
 
     user = await this.mutation.incrementUserCounter(user.id);
 
-    const code = this.otpService.generateCode({
-      secret: user.secret,
-      counter: user.counter,
-    });
+    const code = this.otpService.generateCode(user.secret, user.counter);
 
     await this.emailService.sendEmail({
       to: user.email,

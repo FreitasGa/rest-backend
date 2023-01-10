@@ -5,13 +5,13 @@ import type { BusinessError } from '@errors/business-error';
 import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
 import type { TokenService } from '@services/token/service';
-import type { RefreshTokenInputDto, RefreshTokenOutputDto } from './dtos';
+import type { RefreshTokenInput, RefreshTokenOutput } from './dtos';
 import { UserNotFoundError } from './errors';
 import type { RefreshTokenQuery } from './query';
 
-export type Input = RefreshTokenInputDto;
+export type Input = RefreshTokenInput;
 export type FailureOutput = BusinessError | ApplicationError | UnknownError;
-export type SuccessOutput = RefreshTokenOutputDto;
+export type SuccessOutput = RefreshTokenOutput;
 
 export class RefreshTokenUseCase extends UseCase<
   Input,

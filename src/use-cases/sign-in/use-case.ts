@@ -6,13 +6,13 @@ import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
 import type { HashService } from '@services/hash/service';
 import type { TokenService } from '@services/token/service';
-import type { SignInInputDto, SignInOutputDto } from './dtos';
+import type { SignInInput, SignInOutput } from './dtos';
 import { InvalidCredentialsError } from './errors';
 import type { SingInQuery } from './query';
 
-export type Input = SignInInputDto;
+export type Input = SignInInput;
 export type FailureOutput = BusinessError | UnknownError | ApplicationError;
-export type SuccessOutput = SignInOutputDto;
+export type SuccessOutput = SignInOutput;
 
 export class SignInUseCase extends UseCase<
   Input,

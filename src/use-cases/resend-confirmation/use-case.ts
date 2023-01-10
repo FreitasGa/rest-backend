@@ -6,17 +6,14 @@ import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
 import type { EmailService } from '@services/email/service';
 import type { OtpService } from '@services/otp/service';
-import type {
-  ResendConfirmationInputDto,
-  ResendConfirmationOutputDto,
-} from './dtos';
+import type { ResendConfirmationInput, ResendConfirmationOutput } from './dtos';
 import { UserNotFoundError } from './errors';
 import type { ResendConfirmationMutation } from './mutation';
 import type { ResendConfirmationQuery } from './query';
 
-export type Input = ResendConfirmationInputDto;
+export type Input = ResendConfirmationInput;
 export type FailureOutput = BusinessError | ApplicationError | UnknownError;
-export type SuccessOutput = ResendConfirmationOutputDto;
+export type SuccessOutput = ResendConfirmationOutput;
 
 export class ResendConfirmationUseCase extends UseCase<
   Input,
@@ -57,10 +54,7 @@ export class ResendConfirmationUseCase extends UseCase<
 
     user = await this.mutation.incrementUserCounter(user.id);
 
-    const code = this.otpService.generateCode({
-      secret: user.secret,
-      counter: user.counter,
-    });
+    const code = this.otpService.generateCode(user.secret, user.counter);
 
     await this.emailService.sendEmail({
       to: user.email,

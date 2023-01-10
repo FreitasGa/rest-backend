@@ -1,5 +1,5 @@
-export type ResendConfirmationInputDto = {
+export type ResendConfirmationInput = {
   email: string;
 };
 
-export type ResendConfirmationOutputDto = void;
+export type ResendConfirmationOutput = void;

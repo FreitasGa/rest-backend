@@ -1,7 +1,7 @@
-export type SignUpInputDto = {
+export type SignUpInput = {
   name: string;
   email: string;
   password: string;
 };
 
-export type SignUpOutputDto = void;
+export type SignUpOutput = void;
