@@ -3,31 +3,31 @@ import { InputValidationError } from '@errors/input-validation-error';
 import { MockEmailService } from '@services/email/mock';
 import { MockOtpService } from '@services/otp/mock';
 import { UserNotFoundError } from '../errors';
-import type { ResendConfirmationMutation } from '../mutation';
-import type { ResendConfirmationQuery } from '../query';
-import { ResendConfirmationUseCase, SuccessOutput } from '../use-case';
+import type { ResendEmailConfirmationMutation } from '../mutation';
+import type { ResendEmailConfirmationQuery } from '../query';
+import { ResendEmailConfirmationUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
 import { incrementUserCounter } from './fixtures/mutation';
 import { getUser } from './fixtures/query';
 
-class MockResendConfirmationQuery implements ResendConfirmationQuery {
+class MockResendEmailConfirmationQuery implements ResendEmailConfirmationQuery {
   getUser = jest.fn(async (_email: string): Promise<User | null> => getUser);
 }
 
-class MockResendConfirmationMutation implements ResendConfirmationMutation {
+class MockResendEmailConfirmationMutation implements ResendEmailConfirmationMutation {
   incrementUserCounter = jest.fn(
     async (_id: string): Promise<User> => incrementUserCounter
   );
 }
 
-const query = new MockResendConfirmationQuery();
-const mutation = new MockResendConfirmationMutation();
+const query = new MockResendEmailConfirmationQuery();
+const mutation = new MockResendEmailConfirmationMutation();
 
 async function buildUseCase() {
   const otpService = new MockOtpService();
   const emailService = new MockEmailService();
 
-  return new ResendConfirmationUseCase(
+  return new ResendEmailConfirmationUseCase(
     query,
     mutation,
     otpService,
@@ -35,7 +35,7 @@ async function buildUseCase() {
   );
 }
 
-describe('ResendConfirmationUseCase', () => {
+describe('ResendEmailConfirmationUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {

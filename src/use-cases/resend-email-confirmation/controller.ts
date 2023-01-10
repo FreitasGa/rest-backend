@@ -13,7 +13,7 @@ import type { FailureOutput, Input, SuccessOutput } from './use-case';
 type ErrorTypes = keyof typeof errors | 'InputValidationError' | 'UnknownError';
 
 @OvernightController('confirm-email/resend')
-export class ResendConfirmationController extends Controller<
+export class ResendEmailConfirmationController extends Controller<
   FailureOutput,
   SuccessOutput
 > {

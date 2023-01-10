@@ -6,23 +6,23 @@ import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
 import type { EmailService } from '@services/email/service';
 import type { OtpService } from '@services/otp/service';
-import type { ResendConfirmationInput, ResendConfirmationOutput } from './dtos';
+import type { ResendEmailConfirmationInput, ResendEmailConfirmationOutput } from './dtos';
 import { UserNotFoundError } from './errors';
-import type { ResendConfirmationMutation } from './mutation';
-import type { ResendConfirmationQuery } from './query';
+import type { ResendEmailConfirmationMutation } from './mutation';
+import type { ResendEmailConfirmationQuery } from './query';
 
-export type Input = ResendConfirmationInput;
+export type Input = ResendEmailConfirmationInput;
 export type FailureOutput = BusinessError | ApplicationError | UnknownError;
-export type SuccessOutput = ResendConfirmationOutput;
+export type SuccessOutput = ResendEmailConfirmationOutput;
 
-export class ResendConfirmationUseCase extends UseCase<
+export class ResendEmailConfirmationUseCase extends UseCase<
   Input,
   FailureOutput,
   SuccessOutput
 > {
   constructor(
-    private readonly query: ResendConfirmationQuery,
-    private readonly mutation: ResendConfirmationMutation,
+    private readonly query: ResendEmailConfirmationQuery,
+    private readonly mutation: ResendEmailConfirmationMutation,
     private readonly otpService: OtpService,
     private readonly emailService: EmailService
   ) {

@@ -2,7 +2,7 @@ import type { Prisma } from '@prisma/client';
 
 import type { User } from '@entities/user';
 
-export interface ResendConfirmationQuery {
+export interface ResendEmailConfirmationQuery {
   /**
    * Get user by email
    * @param email user email
@@ -10,7 +10,7 @@ export interface ResendConfirmationQuery {
   getUser(email: string): Promise<User | null>;
 }
 
-export class PrismaResendConfirmationQuery implements ResendConfirmationQuery {
+export class PrismaResendEmailConfirmationQuery implements ResendEmailConfirmationQuery {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async getUser(email: string): Promise<User | null> {
