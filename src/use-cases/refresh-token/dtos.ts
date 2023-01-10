@@ -11,4 +11,8 @@ export type RefreshTokenOutput = {
     token: string;
     expiresAt: number;
   };
+  refreshToken: {
+    token: string;
+    expiresAt: number;
+  };
 };

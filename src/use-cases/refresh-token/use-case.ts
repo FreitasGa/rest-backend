@@ -55,9 +55,14 @@ export class RefreshTokenUseCase extends UseCase<
       confirmed: user.confirmed,
     });
 
+    const refreshToken = this.tokenService.signToken('RefreshToken', {
+      sub: user.id,
+    });
+
     return right({
       accessToken,
       idToken,
+      refreshToken,
     });
   }
 }
