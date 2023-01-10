@@ -5,23 +5,23 @@ import type { BusinessError } from '@errors/business-error';
 import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
 import type { OtpService } from '@services/otp/service';
-import type { ValidateEmailInput, ValidateEmailOutput } from './dtos';
+import type { ConfirmEmailInput, ConfirmEmailOutput } from './dtos';
 import { InvalidCodeError, UserNotFoundError } from './errors';
-import type { ValidateEmailMutation } from './mutation';
-import type { ValidateEmailQuery } from './query';
+import type { ConfirmEmailMutation } from './mutation';
+import type { ConfirmEmailQuery } from './query';
 
-export type Input = ValidateEmailInput;
+export type Input = ConfirmEmailInput;
 export type FailureOutput = BusinessError | ApplicationError | UnknownError;
-export type SuccessOutput = ValidateEmailOutput;
+export type SuccessOutput = ConfirmEmailOutput;
 
-export class ValidateEmailUseCase extends UseCase<
+export class ConfirmEmailUseCase extends UseCase<
   Input,
   FailureOutput,
   SuccessOutput
 > {
   constructor(
-    private readonly query: ValidateEmailQuery,
-    private readonly mutation: ValidateEmailMutation,
+    private readonly query: ConfirmEmailQuery,
+    private readonly mutation: ConfirmEmailMutation,
     private readonly otpService: OtpService
   ) {
     super();

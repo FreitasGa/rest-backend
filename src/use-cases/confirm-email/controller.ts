@@ -5,15 +5,15 @@ import {
 import type { Request, Response } from 'express';
 
 import { Controller } from '@core/controller';
-import type * as errors from './errors';
-import { buildValidateEmail } from './factory';
-import type { FailureOutput, Input, SuccessOutput } from './use-case';
 import { ApplicationError } from '@errors/application-error';
+import type * as errors from './errors';
+import { buildUseCase } from './factory';
+import type { FailureOutput, Input, SuccessOutput } from './use-case';
 
 type ErrorTypes = keyof typeof errors | 'InputValidationError' | 'UnknownError';
 
-@OvernightController('validate-email')
-export class ValidateEmailController extends Controller<
+@OvernightController('confirm-email')
+export class ConfirmEmailController extends Controller<
   FailureOutput,
   SuccessOutput
 > {
@@ -22,7 +22,7 @@ export class ValidateEmailController extends Controller<
     req: Request,
     res: Response
   ): Promise<SuccessOutput | FailureOutput | undefined> {
-    const useCase = await buildValidateEmail();
+    const useCase = await buildUseCase();
     const result = await useCase.run(req.body as Input);
 
     if (result.isWrong()) {

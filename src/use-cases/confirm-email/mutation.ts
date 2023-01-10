@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client';
 
-export interface ValidateEmailMutation {
+export interface ConfirmEmailMutation {
   /**
    * Confirm user
    * @param id user id
@@ -8,7 +8,7 @@ export interface ValidateEmailMutation {
   confirmUser(id: string): Promise<void>;
 }
 
-export class PrismaValidateEmailMutation implements ValidateEmailMutation {
+export class PrismaConfirmEmailMutation implements ConfirmEmailMutation {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async confirmUser(id: string): Promise<void> {

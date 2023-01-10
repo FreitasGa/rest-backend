@@ -2,30 +2,30 @@ import type { User } from '@entities/user';
 import { InputValidationError } from '@errors/input-validation-error';
 import { MockOtpService } from '@services/otp/mock';
 import { InvalidCodeError, UserNotFoundError } from '../errors';
-import type { ValidateEmailMutation } from '../mutation';
-import type { ValidateEmailQuery } from '../query';
-import { SuccessOutput, ValidateEmailUseCase } from '../use-case';
+import type { ConfirmEmailMutation } from '../mutation';
+import type { ConfirmEmailQuery } from '../query';
+import { SuccessOutput, ConfirmEmailUseCase } from '../use-case';
 import { input, output } from './fixtures/dtos';
 import { getUser } from './fixtures/query';
 
-class MockValidateEmailQuery implements ValidateEmailQuery {
+class MockConfirmEmailQuery implements ConfirmEmailQuery {
   getUser = jest.fn(async (_email: string): Promise<User | null> => getUser);
 }
 
-class MockValidateEmailMutation implements ValidateEmailMutation {
+class MockConfirmEmailMutation implements ConfirmEmailMutation {
   confirmUser = jest.fn(async (_id: string): Promise<void> => undefined);
 }
 
-const query = new MockValidateEmailQuery();
-const mutation = new MockValidateEmailMutation();
+const query = new MockConfirmEmailQuery();
+const mutation = new MockConfirmEmailMutation();
 
 async function buildUseCase() {
   const otpService = new MockOtpService();
 
-  return new ValidateEmailUseCase(query, mutation, otpService);
+  return new ConfirmEmailUseCase(query, mutation, otpService);
 }
 
-describe('ValidateEmailUseCase', () => {
+describe('ConfirmEmailUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
