@@ -1,11 +1,11 @@
 const EmailTemplate = {
-  VerifyEmail: 'verify-email',
+  ConfirmEmail: 'confirm-email',
   ResetPassword: 'reset-password',
 } as const;
 
 export type EmailTemplate = (typeof EmailTemplate)[keyof typeof EmailTemplate];
 
-export type VerifyEmailData = {
+export type ConfirmEmailData = {
   name: string;
   code: string;
 };
@@ -16,7 +16,7 @@ export type ResetPasswordData = {
 };
 
 export type EmailTemplateData = {
-  [EmailTemplate.VerifyEmail]: VerifyEmailData;
+  [EmailTemplate.ConfirmEmail]: ConfirmEmailData;
   [EmailTemplate.ResetPassword]: ResetPasswordData;
 };
 

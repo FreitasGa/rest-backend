@@ -66,7 +66,7 @@ export class ResendEmailConfirmationUseCase extends UseCase<
     await this.emailService.send({
       to: user.email,
       subject: 'Verify your email',
-      template: 'verify-email',
+      template: 'confirm-email',
       data: {
         code,
         name: user.name,
