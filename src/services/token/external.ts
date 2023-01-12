@@ -54,6 +54,7 @@ export class JwtTokenService implements TokenService {
       });
 
       return result as Payload[Type];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const errors: Record<string, TokenExpiredError | InvalidTokenError> = {
         [jwt.TokenExpiredError.name]: new TokenExpiredError(),

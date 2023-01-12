@@ -42,6 +42,7 @@ export async function authMiddleware(
     req.userId = result.sub;
 
     next();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     errorHandler(req, res, StatusCodes.UNAUTHORIZED, error);
   }
