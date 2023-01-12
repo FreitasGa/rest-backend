@@ -10,7 +10,6 @@ export class NodemailerEmailService implements EmailService {
   private readonly transporter = nodemailer.createTransport({
     host: config.get('email.host'),
     port: config.get('email.port'),
-    secure: config.get('email.secure'),
     auth: {
       user: config.get('email.username'),
       pass: config.get('email.password'),
@@ -22,6 +21,7 @@ export class NodemailerEmailService implements EmailService {
 
     const templatePath = path.join(
       __dirname,
+      '..',
       '..',
       templatesFolder,
       `${template}.hbs`
