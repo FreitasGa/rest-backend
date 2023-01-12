@@ -2,7 +2,7 @@ import type { User } from '@entities/user';
 import { InputValidationError } from '@errors/input-validation-error';
 import { MockEmailService } from '@services/email/mock';
 import { MockOtpService } from '@services/otp/mock';
-import { UserNotFoundError } from '../errors';
+import { UserAlreadyConfirmedError, UserNotFoundError } from '../errors';
 import type { ResendEmailConfirmationMutation } from '../mutation';
 import type { ResendEmailConfirmationQuery } from '../query';
 import { ResendEmailConfirmationUseCase, SuccessOutput } from '../use-case';
@@ -70,5 +70,16 @@ describe('ResendEmailConfirmationUseCase', () => {
 
     expect(result.isWrong()).toBeTruthy();
     expect(result.value).toBeInstanceOf(UserNotFoundError);
+  });
+
+  it('should fail with UserAlreadyConfirmedError when user already confirmed', async () => {
+    query.getUser.mockResolvedValueOnce({ ...getUser, confirmed: true });
+    mutation.incrementUserCounter.mockResolvedValueOnce(incrementUserCounter);
+
+    const useCase = await buildUseCase();
+    const result = await useCase.run(input);
+
+    expect(result.isWrong()).toBeTruthy();
+    expect(result.value).toBeInstanceOf(UserAlreadyConfirmedError);
   });
 });

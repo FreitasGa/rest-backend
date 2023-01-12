@@ -10,7 +10,7 @@ import type {
   ResendEmailConfirmationInput,
   ResendEmailConfirmationOutput,
 } from './dtos';
-import { UserNotFoundError } from './errors';
+import { UserAlreadyConfirmedError, UserNotFoundError } from './errors';
 import type { ResendEmailConfirmationMutation } from './mutation';
 import type { ResendEmailConfirmationQuery } from './query';
 
@@ -53,6 +53,10 @@ export class ResendEmailConfirmationUseCase extends UseCase<
 
     if (!user) {
       return wrong(new UserNotFoundError());
+    }
+
+    if (user.confirmed) {
+      return wrong(new UserAlreadyConfirmedError());
     }
 
     user = await this.mutation.incrementUserCounter(user.id);

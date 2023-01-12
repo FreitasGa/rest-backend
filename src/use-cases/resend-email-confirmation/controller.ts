@@ -32,6 +32,7 @@ export class ResendEmailConfirmationController extends Controller<
         InputValidationError: this.badRequest,
         UnknownError: this.internalServerError,
         UserNotFoundError: this.unprocessableEntity,
+        UserAlreadyConfirmedError: this.unprocessableEntity,
       });
 
       const treatment = errorMap[error.constructor.name as ErrorTypes];

@@ -5,7 +5,7 @@ export const getUser = new User({
   name: 'John Doe',
   email: 'john@doe.com',
   password: 'Passw0rd!',
-  confirmed: true,
+  confirmed: false,
   secret: 'secret',
   counter: 0,
   blockedTill: null,

@@ -5,3 +5,9 @@ export class UserNotFoundError extends BusinessError {
     super('User not found.');
   }
 }
+
+export class UserAlreadyConfirmedError extends BusinessError {
+  constructor() {
+    super('User already confirmed.');
+  }
+}
