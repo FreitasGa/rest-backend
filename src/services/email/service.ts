@@ -31,7 +31,7 @@ export type SendEmailOptions<Template extends EmailTemplate> = {
 };
 
 export interface EmailService {
-  sendEmail<Template extends EmailTemplate>(
+  send<Template extends EmailTemplate>(
     options: SendEmailOptions<Template>
   ): Promise<void>;
 }

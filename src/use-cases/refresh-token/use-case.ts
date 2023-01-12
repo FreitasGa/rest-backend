@@ -36,7 +36,7 @@ export class RefreshTokenUseCase extends UseCase<
   protected async execute(
     input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
-    const payload = this.tokenService.verifyToken(input.refreshToken);
+    const payload = this.tokenService.verify(input.refreshToken);
 
     const user = await this.query.getUser(payload.sub);
 
@@ -44,18 +44,18 @@ export class RefreshTokenUseCase extends UseCase<
       return wrong(new UserNotFoundError());
     }
 
-    const accessToken = this.tokenService.signToken('AccessToken', {
+    const accessToken = this.tokenService.sign('AccessToken', {
       sub: user.id,
     });
 
-    const idToken = this.tokenService.signToken('IdToken', {
+    const idToken = this.tokenService.sign('IdToken', {
       sub: user.id,
       name: user.name,
       email: user.email,
       confirmed: user.confirmed,
     });
 
-    const refreshToken = this.tokenService.signToken('RefreshToken', {
+    const refreshToken = this.tokenService.sign('RefreshToken', {
       sub: user.id,
     });
 

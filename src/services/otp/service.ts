@@ -10,6 +10,6 @@ export type CheckCodeInput = {
 };
 
 export interface OtpService {
-  generateCode(secret: string, counter: number): string;
-  checkCode(code: string, secret: string, counter: number): boolean;
+  generate(secret: string, counter: number): string;
+  check(code: string, secret: string, counter: number): boolean;
 }

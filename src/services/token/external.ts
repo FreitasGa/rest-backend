@@ -15,7 +15,7 @@ export class JwtTokenService implements TokenService {
     issuer: 'https://rest.gg',
   };
 
-  signToken<Type extends TokenType>(type: Type, payload: Payload[Type]): Token {
+  sign<Type extends TokenType>(type: Type, payload: Payload[Type]): Token {
     const expiresIn: Record<TokenType, string> = {
       AccessToken: config.get('auth.accessToken.expiresIn'),
       IdToken: config.get('auth.idToken.expiresIn'),
@@ -46,7 +46,7 @@ export class JwtTokenService implements TokenService {
     };
   }
 
-  verifyToken<Type extends TokenType>(token: Token['token']): Payload[Type] {
+  verify<Type extends TokenType>(token: Token['token']): Payload[Type] {
     try {
       const result = jwt.verify(token, this.secret, {
         audience: this.options.audience,

@@ -55,7 +55,7 @@ export class ConfirmEmailUseCase extends UseCase<
       return wrong(new UserNotFoundError());
     }
 
-    const isCodeValid = this.otpService.checkCode(
+    const isCodeValid = this.otpService.check(
       input.code,
       user.secret,
       user.counter

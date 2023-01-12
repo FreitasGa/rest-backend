@@ -70,18 +70,18 @@ export class SignInUseCase extends UseCase<
       return wrong(new InvalidCredentialsError());
     }
 
-    const accessToken = this.tokenService.signToken('AccessToken', {
+    const accessToken = this.tokenService.sign('AccessToken', {
       sub: user.id,
     });
 
-    const idToken = this.tokenService.signToken('IdToken', {
+    const idToken = this.tokenService.sign('IdToken', {
       sub: user.id,
       name: user.name,
       email: user.email,
       confirmed: user.confirmed,
     });
 
-    const refreshToken = this.tokenService.signToken('RefreshToken', {
+    const refreshToken = this.tokenService.sign('RefreshToken', {
       sub: user.id,
     });
 

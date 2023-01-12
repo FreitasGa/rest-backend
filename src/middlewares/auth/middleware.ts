@@ -17,7 +17,7 @@ async function tokenValidate(
     throw new InvalidTokenError();
   }
 
-  return service.verifyToken(token);
+  return service.verify(token);
 }
 
 export async function authMiddleware(

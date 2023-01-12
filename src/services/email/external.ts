@@ -30,7 +30,7 @@ export class NodemailerEmailService implements EmailService {
     return fs.readFileSync(templatePath, 'utf8');
   }
 
-  async sendEmail<Template extends EmailTemplate>(
+  async send<Template extends EmailTemplate>(
     options: SendEmailOptions<Template>
   ): Promise<void> {
     if (!options.from) {

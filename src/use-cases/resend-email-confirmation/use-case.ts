@@ -61,9 +61,9 @@ export class ResendEmailConfirmationUseCase extends UseCase<
 
     user = await this.mutation.incrementUserCounter(user.id);
 
-    const code = this.otpService.generateCode(user.secret, user.counter);
+    const code = this.otpService.generate(user.secret, user.counter);
 
-    await this.emailService.sendEmail({
+    await this.emailService.send({
       to: user.email,
       subject: 'Verify your email',
       template: 'verify-email',

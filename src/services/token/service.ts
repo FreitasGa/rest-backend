@@ -33,6 +33,6 @@ export type Token = {
 };
 
 export interface TokenService {
-  signToken<Type extends TokenType>(type: Type, payload: Payload[Type]): Token;
-  verifyToken<Type extends TokenType>(token: Token['token']): Payload[Type];
+  sign<Type extends TokenType>(type: Type, payload: Payload[Type]): Token;
+  verify<Type extends TokenType>(token: Token['token']): Payload[Type];
 }
