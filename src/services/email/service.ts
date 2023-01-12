@@ -1,29 +1,37 @@
-import type { Attachment } from 'nodemailer/lib/mailer';
-
 const EmailTemplate = {
   VerifyEmail: 'verify-email',
+  ResetPassword: 'reset-password',
 } as const;
 
 export type EmailTemplate = (typeof EmailTemplate)[keyof typeof EmailTemplate];
 
-export type EmailTemplateData = {
-  [EmailTemplate.VerifyEmail]: {
-    name: string;
-    code: string;
-  };
+export type VerifyEmailData = {
+  name: string;
+  code: string;
 };
 
-export type SendEmailOptions = {
+export type ResetPasswordData = {
+  name: string;
+  code: string;
+};
+
+export type EmailTemplateData = {
+  [EmailTemplate.VerifyEmail]: VerifyEmailData;
+  [EmailTemplate.ResetPassword]: ResetPasswordData;
+};
+
+export type SendEmailOptions<Template extends EmailTemplate> = {
   to: string;
   subject: string;
-  template: EmailTemplate;
-  data: EmailTemplateData[EmailTemplate];
+  template: Template;
+  data: EmailTemplateData[Template];
   from?: string;
   cc?: string;
   bcc?: string;
-  attachments?: Attachment[];
 };
 
 export interface EmailService {
-  sendEmail(options: SendEmailOptions): Promise<void>;
+  sendEmail<Template extends EmailTemplate>(
+    options: SendEmailOptions<Template>
+  ): Promise<void>;
 }

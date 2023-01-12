@@ -16,7 +16,7 @@ export class NodemailerEmailService implements EmailService {
     },
   });
 
-  private getTemplateSource(template: EmailTemplate): string {
+  private getTemplate(template: EmailTemplate): string {
     const templatesFolder: string = config.get('email.templatesFolder');
 
     const templatePath = path.join(
@@ -30,35 +30,28 @@ export class NodemailerEmailService implements EmailService {
     return fs.readFileSync(templatePath, 'utf8');
   }
 
-  async sendEmail({
-    to,
-    subject,
-    template,
-    data,
-    from,
-    cc,
-    bcc,
-    attachments,
-  }: SendEmailOptions): Promise<void> {
-    if (!from) {
-      from = config.get('email.from');
+  async sendEmail<Template extends EmailTemplate>(
+    options: SendEmailOptions<Template>
+  ): Promise<void> {
+    if (!options.from) {
+      options.from = config.get('email.from');
     }
 
-    const templateSource = this.getTemplateSource(template);
-    const compiledTemplate = handlebars.compile(templateSource);
-    const html = compiledTemplate({
-      ...data,
+    const template = this.getTemplate(options.template);
+    const compileTemplate = handlebars.compile(template);
+
+    const html = compileTemplate({
+      ...options.data,
       appName: config.get('app.name'),
     });
 
     await this.transporter.sendMail({
-      from,
-      to,
-      subject,
+      from: options.from,
+      to: options.to,
+      subject: options.subject,
       html,
-      cc,
-      bcc,
-      attachments,
+      cc: options.cc,
+      bcc: options.bcc,
     });
   }
 }
