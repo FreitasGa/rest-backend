@@ -23,7 +23,7 @@ COPY --from=builder /usr/app/node_modules ./node_modules
 COPY --from=builder /usr/app/package.json ./package.json
 COPY --from=builder /usr/app/package-lock.json ./package-lock.json
 
-COPY --from=builder /usr/app/src/templates ./dist/src/templates
+COPY --from=builder /usr/app/src/templates ./dist/templates
 
 EXPOSE 3000
 

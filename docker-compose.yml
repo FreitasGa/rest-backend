@@ -48,6 +48,12 @@ services:
       - CACHE_HOST=cache
       - CACHE_PORT
       - CACHE_PASSWORD
+      - EMAIL_HOST
+      - EMAIL_PORT
+      - EMAIL_SECURE
+      - EMAIL_USERNAME
+      - EMAIL_PASSWORD
+      - EMAIL_FROM
       
 networks:
   rest:

@@ -123,8 +123,11 @@ export abstract class Controller<L extends Error, R> {
     const response = result instanceof Wrong ? result.value : result;
     const error = { name: response.name, message: response.message };
 
+    console.error(response);
     console.error(
-      `[${req.method}] ${req.originalUrl} - [${status}] error: ${error}`
+      `[${req.method}] ${req.originalUrl} - [${status}] error: ${JSON.stringify(
+        error
+      )}`
     );
 
     res.status(status).send({
