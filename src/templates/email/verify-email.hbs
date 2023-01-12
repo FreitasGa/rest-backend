@@ -1,24 +1,26 @@
-{{#> body}}
-    {{#> greeting}}
-        Hello {{name}},
-    {{/greeting}}
+<div>
+    <p>
+        Hello <b>{{ name }}</b>,
+    </p>
 
-    {{#> message}}
-        You recently created a {{appName}} account. Use the following code within the next 10 minutes to verify your email.
-    {{/message}}
+    <p>
+        You recently created a {{appName}} account.
+        Use the following code within the next 10 minutes to verify your email.
+    </p>
 
     {{#> verify-email}}
-        {{#> verify-email-code}}
-            {{code}}
-        {{/verify-email-code}}
+    {{#> verify-email-code}}
+    {{code}}
+    {{/verify-email-code}}
     {{/verify-email}}
 
-    {{#> message}}
-        If you did not create an account, please ignore this email or <a href="#">contact support</a> if you have questions.
-    {{/message}}
+    <p>
+        If you did not create an account, please ignore this email or <a href="#">contact support</a> if you have
+        questions.
+    </p>
 
-    {{#> message}}
+    <p>
         Thanks,
-        The {{appName}} Team
-    {{/message}}
-{{/body}}
+        <b>The {{ appName }} Team</b>
+    </p>
+</div>
