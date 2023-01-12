@@ -13,4 +13,8 @@ export const output: SuccessOutput = {
     token: expect.any(String),
     expiresAt: expect.any(Number),
   },
+  refreshToken: {
+    token: expect.any(String),
+    expiresAt: expect.any(Number),
+  },
 };
