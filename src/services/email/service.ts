@@ -22,16 +22,24 @@ export type EmailTemplateData = {
 
 export type SendEmailOptions<Template extends EmailTemplate> = {
   to: string;
-  subject: string;
-  template: Template;
   data: EmailTemplateData[Template];
   from?: string;
   cc?: string;
   bcc?: string;
 };
 
+export function getSubject(template: EmailTemplate): string {
+  const subjects: Record<EmailTemplate, string> = {
+    'confirm-email': 'Confirm your email',
+    'reset-password': 'Reset your password',
+  };
+
+  return subjects[template];
+}
+
 export interface EmailService {
   send<Template extends EmailTemplate>(
+    template: Template,
     options: SendEmailOptions<Template>
   ): Promise<void>;
 }

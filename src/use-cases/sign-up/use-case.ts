@@ -75,10 +75,8 @@ export class SignUpUseCase extends UseCase<
 
     const code = this.otpService.generate(user.secret, user.counter);
 
-    await this.emailService.send({
+    await this.emailService.send('confirm-email', {
       to: user.email,
-      subject: 'Verify your email',
-      template: 'confirm-email',
       data: {
         code,
         name: user.name,

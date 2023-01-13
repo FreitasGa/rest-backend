@@ -4,7 +4,12 @@ import handlebars from 'handlebars';
 import nodemailer from 'nodemailer';
 import path from 'path';
 
-import type { EmailService, EmailTemplate, SendEmailOptions } from './service';
+import {
+  EmailService,
+  EmailTemplate,
+  getSubject,
+  SendEmailOptions,
+} from './service';
 
 export class NodemailerEmailService implements EmailService {
   private readonly transporter = nodemailer.createTransport({
@@ -16,7 +21,7 @@ export class NodemailerEmailService implements EmailService {
     },
   });
 
-  private getTemplate(template: EmailTemplate): string {
+  private getTemplateFile(template: EmailTemplate): string {
     const templatesFolder: string = config.get('email.templatesFolder');
 
     const templatePath = path.join(
@@ -31,14 +36,15 @@ export class NodemailerEmailService implements EmailService {
   }
 
   async send<Template extends EmailTemplate>(
+    template: Template,
     options: SendEmailOptions<Template>
   ): Promise<void> {
     if (!options.from) {
       options.from = config.get('email.from');
     }
 
-    const template = this.getTemplate(options.template);
-    const compileTemplate = handlebars.compile(template);
+    const templateFile = this.getTemplateFile(template);
+    const compileTemplate = handlebars.compile(templateFile);
 
     const html = compileTemplate({
       ...options.data,
@@ -48,7 +54,7 @@ export class NodemailerEmailService implements EmailService {
     await this.transporter.sendMail({
       from: options.from,
       to: options.to,
-      subject: options.subject,
+      subject: getSubject(template),
       html,
       cc: options.cc,
       bcc: options.bcc,
