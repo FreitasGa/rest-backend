@@ -63,6 +63,25 @@ export class App extends OvernightServer {
     );
   }
 
+  private async setupWorkers(): Promise<void> {
+    const files = await glob(`${__dirname}/use-cases/**/worker.[t|j]s`, {
+      absolute: true,
+    });
+
+    const workers = await Promise.all(
+      files.map(async (file) => {
+        const module = await import(file);
+        return module[Object.keys(module)[0]];
+      })
+    );
+
+    workers.forEach((Worker) => new Worker());
+
+    console.info(
+      `Workers: ${JSON.stringify(workers.map((Worker) => Worker.name))}`
+    );
+  }
+
   async start(port = 3000): Promise<void> {
     this.setupExpress();
     this.setupDatabase();
