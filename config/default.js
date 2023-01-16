@@ -37,5 +37,17 @@ module.exports = {
     host: process.env.CACHE_HOST,
     port: process.env.CACHE_PORT,
     password: process.env.CACHE_PASSWORD,
-  }
+  },
+  queue: {
+    host: process.env.QUEUE_HOST,
+    port: process.env.QUEUE_PORT,
+    password: process.env.QUEUE_PASSWORD,
+    email: {
+      name: process.env.QUEUE_EMAIL_NAME,
+      options: {
+        attempts: process.env.QUEUE_EMAIL_ATTEMPTS,
+        delay: process.env.QUEUE_EMAIL_DELAY,
+      },
+    },
+  },
 };

@@ -24,6 +24,15 @@ services:
       - rest
     command: [redis-server, --requirepass, "redis"]
 
+  queue:
+    container_name: rest-queue
+    image: redis
+    ports:
+      - 6380:6380
+    networks:
+      - rest
+    command: [redis-server, --requirepass, "redis"]
+
   backend:
     container_name: rest-backend
     image: rest-backend
@@ -35,6 +44,7 @@ services:
     depends_on:
       - database
       - cache
+      - queue
     environment:
       - NODE_ENV=development
       - PORT
@@ -44,17 +54,20 @@ services:
       - AUTH_ACCESS_TOKEN_EXPIRES_IN
       - AUTH_ID_TOKEN_EXPIRES_IN
       - AUTH_REFRESH_TOKEN_EXPIRES_IN
-      - DATABASE_URL=postgresql://postgres:postgres@database:5432/rest?schema=public
-      - CACHE_HOST=cache
-      - CACHE_PORT
-      - CACHE_PASSWORD
       - EMAIL_HOST
       - EMAIL_PORT
       - EMAIL_SECURE
       - EMAIL_USERNAME
       - EMAIL_PASSWORD
       - EMAIL_FROM
-      
+      - DATABASE_URL=postgresql://postgres:postgres@database:5432/rest?schema=public
+      - CACHE_HOST=cache
+      - CACHE_PORT
+      - CACHE_PASSWORD
+      - QUEUE_HOST=localhost
+      - QUEUE_PORT=6380
+      - QUEUE_PASSWORD=redis
+
 networks:
   rest:
     name: rest
