@@ -1,5 +1,5 @@
-import { Job } from '@decorators/job';
-import { Worker } from '@decorators/worker';
+import { Job } from '@decorators/queue/job';
+import { Worker } from '@decorators/queue/worker';
 import type { SendEmailOptions, Template } from '@services/email/service';
 import { buildUseCase } from './factory';
 
