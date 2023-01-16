@@ -15,14 +15,17 @@ export class JwtTokenService implements TokenService {
     issuer: 'https://rest.gg',
   };
 
-  sign<Type extends TokenType>(type: Type, payload: Payload[Type]): Token {
-    const expiresIn: Record<TokenType, string> = {
+  sign<TokenType extends Type>(
+    type: TokenType,
+    payload: Payload[TokenType]
+  ): Token {
+    const expiresIn: Record<Type, string> = {
       AccessToken: config.get('auth.accessToken.expiresIn'),
       IdToken: config.get('auth.idToken.expiresIn'),
       RefreshToken: config.get('auth.refreshToken.expiresIn'),
     };
 
-    const typ: Record<TokenType, string> = {
+    const typ: Record<Type, string> = {
       AccessToken: 'at+jwt',
       IdToken: 'id+jwt',
       RefreshToken: 'rt+jwt',
@@ -46,14 +49,14 @@ export class JwtTokenService implements TokenService {
     };
   }
 
-  verify<Type extends TokenType>(token: Token['token']): Payload[Type] {
+  verify<TokenType extends Type>(token: Token['token']): Payload[TokenType] {
     try {
       const result = jwt.verify(token, this.secret, {
         audience: this.options.audience,
         issuer: this.options.issuer,
       });
 
-      return result as Payload[Type];
+      return result as Payload[TokenType];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const errors: Record<string, TokenExpiredError | InvalidTokenError> = {
