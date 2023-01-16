@@ -87,6 +87,7 @@ export class App extends OvernightServer {
     this.setupDatabase();
     this.setupCache();
     await this.setupControllers();
+    await this.setupWorkers();
 
     const server = this.app.listen(port, () => {
       const tz: string = config.get('app.tz');
