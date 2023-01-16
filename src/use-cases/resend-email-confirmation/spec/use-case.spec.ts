@@ -1,7 +1,7 @@
 import type { User } from '@entities/user';
 import { InputValidationError } from '@errors/input-validation-error';
-import { MockEmailService } from '@services/email/mock';
 import { MockOtpService } from '@services/otp/mock';
+import { MockEmailQueueService } from '@services/queue/email/mock';
 import { UserAlreadyConfirmedError, UserNotFoundError } from '../errors';
 import type { ResendEmailConfirmationMutation } from '../mutation';
 import type { ResendEmailConfirmationQuery } from '../query';
@@ -27,13 +27,13 @@ const mutation = new MockResendEmailConfirmationMutation();
 
 async function buildUseCase() {
   const otpService = new MockOtpService();
-  const emailService = new MockEmailService();
+  const emailQueueService = new MockEmailQueueService();
 
   return new ResendEmailConfirmationUseCase(
     query,
     mutation,
     otpService,
-    emailService
+    emailQueueService
   );
 }
 

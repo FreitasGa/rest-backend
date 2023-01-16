@@ -4,8 +4,8 @@ import type { ApplicationError } from '@errors/application-error';
 import type { BusinessError } from '@errors/business-error';
 import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
-import type { EmailService } from '@services/email/service';
 import type { OtpService } from '@services/otp/service';
+import type { EmailQueueService } from '@services/queue/email/service';
 import type {
   ResendEmailConfirmationInput,
   ResendEmailConfirmationOutput,
@@ -27,7 +27,7 @@ export class ResendEmailConfirmationUseCase extends UseCase<
     private readonly query: ResendEmailConfirmationQuery,
     private readonly mutation: ResendEmailConfirmationMutation,
     private readonly otpService: OtpService,
-    private readonly emailService: EmailService
+    private readonly emailQueueService: EmailQueueService
   ) {
     super();
   }
@@ -63,7 +63,7 @@ export class ResendEmailConfirmationUseCase extends UseCase<
 
     const code = this.otpService.generate(user.secret, user.counter);
 
-    await this.emailService.send('confirm-email', {
+    await this.emailQueueService.add('ConfirmEmail', {
       to: user.email,
       data: {
         code,

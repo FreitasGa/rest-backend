@@ -4,9 +4,9 @@ import type { ApplicationError } from '@errors/application-error';
 import type { BusinessError } from '@errors/business-error';
 import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
-import type { EmailService } from '@services/email/service';
 import type { HashService } from '@services/hash/service';
 import type { OtpService } from '@services/otp/service';
+import type { EmailQueueService } from '@services/queue/email/service';
 import type { SignUpInput, SignUpOutput } from './dtos';
 import { InvalidCredentialsError } from './errors';
 import type { SignUpMutation } from './mutation';
@@ -26,7 +26,7 @@ export class SignUpUseCase extends UseCase<
     private readonly mutation: SignUpMutation,
     private readonly hashService: HashService,
     private readonly otpService: OtpService,
-    private readonly emailService: EmailService
+    private readonly emailQueueService: EmailQueueService
   ) {
     super();
   }
@@ -75,7 +75,7 @@ export class SignUpUseCase extends UseCase<
 
     const code = this.otpService.generate(user.secret, user.counter);
 
-    await this.emailService.send('confirm-email', {
+    await this.emailQueueService.add('ConfirmEmail', {
       to: user.email,
       data: {
         code,

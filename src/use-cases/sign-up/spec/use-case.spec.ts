@@ -1,8 +1,8 @@
 import type { User } from '@entities/user';
 import { InputValidationError } from '@errors/input-validation-error';
-import { MockEmailService } from '@services/email/mock';
 import { MockHashService } from '@services/hash/mock';
 import { MockOtpService } from '@services/otp/mock';
+import { MockEmailQueueService } from '@services/queue/email/mock';
 import { InvalidCredentialsError } from '../errors';
 import type { CreateUserInput, SignUpMutation } from '../mutation';
 import type { SignUpQuery } from '../query';
@@ -30,14 +30,14 @@ const mutation = new MockSignUpMutation();
 async function buildUseCase() {
   const hashService = new MockHashService();
   const otpService = new MockOtpService();
-  const emailService = new MockEmailService();
+  const emailQueueService = new MockEmailQueueService();
 
   return new SignUpUseCase(
     query,
     mutation,
     hashService,
     otpService,
-    emailService
+    emailQueueService
   );
 }
 
