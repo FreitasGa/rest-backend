@@ -28,7 +28,7 @@ services:
     container_name: rest-queue
     image: redis
     ports:
-      - 6380:6380
+      - 6380:6379
     networks:
       - rest
     command: [redis-server, --requirepass, "redis"]
@@ -64,9 +64,11 @@ services:
       - CACHE_HOST=cache
       - CACHE_PORT
       - CACHE_PASSWORD
-      - QUEUE_HOST=localhost
-      - QUEUE_PORT=6380
-      - QUEUE_PASSWORD=redis
+      - QUEUE_HOST=queue
+      - QUEUE_PORT
+      - QUEUE_PASSWORD
+      - QUEUE_EMAIL_ATTEMPTS
+      - QUEUE_EMAIL_DELAY
 
 networks:
   rest:
