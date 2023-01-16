@@ -1,14 +1,14 @@
 import {
   EmailService,
-  EmailTemplate,
+  Template,
   getSubject,
   SendEmailOptions,
 } from './service';
 
 export class MockEmailService implements EmailService {
-  async send<Template extends EmailTemplate>(
-    template: Template,
-    options: SendEmailOptions<Template>
+  async send<EmailTemplate extends Template>(
+    template: EmailTemplate,
+    options: SendEmailOptions<EmailTemplate>
   ): Promise<void> {
     const subject = getSubject(template);
 

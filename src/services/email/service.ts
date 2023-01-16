@@ -1,9 +1,9 @@
-const EmailTemplate = {
+export const Template = {
   ConfirmEmail: 'confirm-email',
   ResetPassword: 'reset-password',
 } as const;
 
-export type EmailTemplate = (typeof EmailTemplate)[keyof typeof EmailTemplate];
+export type Template = (typeof Template)[keyof typeof Template];
 
 export type ConfirmEmailData = {
   name: string;
@@ -15,21 +15,21 @@ export type ResetPasswordData = {
   code: string;
 };
 
-export type EmailTemplateData = {
-  [EmailTemplate.ConfirmEmail]: ConfirmEmailData;
-  [EmailTemplate.ResetPassword]: ResetPasswordData;
+export type TemplateData = {
+  [Template.ConfirmEmail]: ConfirmEmailData;
+  [Template.ResetPassword]: ResetPasswordData;
 };
 
-export type SendEmailOptions<Template extends EmailTemplate> = {
+export type SendEmailOptions<EmailTemplate extends Template> = {
   to: string;
-  data: EmailTemplateData[Template];
+  data: TemplateData[EmailTemplate];
   from?: string;
   cc?: string;
   bcc?: string;
 };
 
-export function getSubject(template: EmailTemplate): string {
-  const subjects: Record<EmailTemplate, string> = {
+export function getSubject(template: Template): string {
+  const subjects: Record<Template, string> = {
     'confirm-email': 'Confirm your email',
     'reset-password': 'Reset your password',
   };
@@ -38,8 +38,8 @@ export function getSubject(template: EmailTemplate): string {
 }
 
 export interface EmailService {
-  send<Template extends EmailTemplate>(
-    template: Template,
-    options: SendEmailOptions<Template>
+  send<EmailTemplate extends Template>(
+    template: EmailTemplate,
+    options: SendEmailOptions<EmailTemplate>
   ): Promise<void>;
 }

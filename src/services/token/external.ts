@@ -5,7 +5,7 @@ import ms from 'ms';
 import { v4 as uuid } from 'uuid';
 
 import { InvalidTokenError, TokenExpiredError } from './errors';
-import type { Payload, Token, TokenService, TokenType } from './service';
+import type { Payload, Token, TokenService, Type } from './service';
 
 export class JwtTokenService implements TokenService {
   private readonly secret: string = config.get('auth.secret');

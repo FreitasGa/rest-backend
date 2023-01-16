@@ -1,10 +1,10 @@
-const TokenType = {
+const Type = {
   AccessToken: 'AccessToken',
   IdToken: 'IdToken',
   RefreshToken: 'RefreshToken',
 } as const;
 
-export type TokenType = (typeof TokenType)[keyof typeof TokenType];
+export type Type = (typeof Type)[keyof typeof Type];
 
 export type AccessTokenPayload = {
   sub: string;
@@ -22,9 +22,9 @@ export type RefreshTokenPayload = {
 };
 
 export type Payload = {
-  [TokenType.AccessToken]: AccessTokenPayload;
-  [TokenType.IdToken]: IdTokenPayload;
-  [TokenType.RefreshToken]: RefreshTokenPayload;
+  [Type.AccessToken]: AccessTokenPayload;
+  [Type.IdToken]: IdTokenPayload;
+  [Type.RefreshToken]: RefreshTokenPayload;
 };
 
 export type Token = {
@@ -33,6 +33,6 @@ export type Token = {
 };
 
 export interface TokenService {
-  sign<Type extends TokenType>(type: Type, payload: Payload[Type]): Token;
-  verify<Type extends TokenType>(token: Token['token']): Payload[Type];
+  sign<TokenType extends Type>(type: Type, payload: Payload[TokenType]): Token;
+  verify<TokenType extends Type>(token: Token['token']): Payload[TokenType];
 }

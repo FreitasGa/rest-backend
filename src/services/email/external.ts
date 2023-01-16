@@ -6,7 +6,7 @@ import path from 'path';
 
 import {
   EmailService,
-  EmailTemplate,
+  Template,
   getSubject,
   SendEmailOptions,
 } from './service';
@@ -21,7 +21,7 @@ export class NodemailerEmailService implements EmailService {
     },
   });
 
-  private getTemplateFile(template: EmailTemplate): string {
+  private getTemplateFile(template: Template): string {
     const templatesFolder: string = config.get('email.templatesFolder');
 
     const templatePath = path.join(
@@ -35,9 +35,9 @@ export class NodemailerEmailService implements EmailService {
     return fs.readFileSync(templatePath, 'utf8');
   }
 
-  async send<Template extends EmailTemplate>(
-    template: Template,
-    options: SendEmailOptions<Template>
+  async send<EmailTemplate extends Template>(
+    template: EmailTemplate,
+    options: SendEmailOptions<EmailTemplate>
   ): Promise<void> {
     if (!options.from) {
       options.from = config.get('email.from');

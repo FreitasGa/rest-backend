@@ -1,4 +1,4 @@
-import type { Payload, Token, TokenService, TokenType } from './service';
+import type { Payload, Token, TokenService, Type } from './service';
 
 export class MockTokenService implements TokenService {
   private readonly token = 'mock_token';
