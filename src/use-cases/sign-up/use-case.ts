@@ -65,15 +65,13 @@ export class SignUpUseCase extends UseCase<
 
     const hashedPassword = await this.hashService.hash(input.password);
 
-    let user = await this.mutation.createUser({
+    const user = await this.mutation.createUser({
       name: input.name,
       email: input.email,
       password: hashedPassword,
     });
 
-    user = await this.mutation.incrementUserCounter(user.id);
-
-    const code = this.otpService.generate(user.secret, user.counter);
+    const code = this.otpService.generate(user.secret);
 
     await this.emailQueueService.add('ConfirmEmail', {
       to: user.email,

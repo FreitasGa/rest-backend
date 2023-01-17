@@ -11,7 +11,6 @@ import type {
   ResendEmailConfirmationOutput,
 } from './dtos';
 import { UserAlreadyConfirmedError, UserNotFoundError } from './errors';
-import type { ResendEmailConfirmationMutation } from './mutation';
 import type { ResendEmailConfirmationQuery } from './query';
 
 export type Input = ResendEmailConfirmationInput;
@@ -25,7 +24,6 @@ export class ResendEmailConfirmationUseCase extends UseCase<
 > {
   constructor(
     private readonly query: ResendEmailConfirmationQuery,
-    private readonly mutation: ResendEmailConfirmationMutation,
     private readonly otpService: OtpService,
     private readonly emailQueueService: EmailQueueService
   ) {
@@ -49,7 +47,7 @@ export class ResendEmailConfirmationUseCase extends UseCase<
   protected async execute(
     input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
-    let user = await this.query.getUser(input.email);
+    const user = await this.query.getUser(input.email);
 
     if (!user) {
       return wrong(new UserNotFoundError());
@@ -59,9 +57,7 @@ export class ResendEmailConfirmationUseCase extends UseCase<
       return wrong(new UserAlreadyConfirmedError());
     }
 
-    user = await this.mutation.incrementUserCounter(user.id);
-
-    const code = this.otpService.generate(user.secret, user.counter);
+    const code = this.otpService.generate(user.secret);
 
     await this.emailQueueService.add('ConfirmEmail', {
       to: user.email,

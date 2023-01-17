@@ -14,11 +14,6 @@ export interface SignUpMutation {
    * @param input data: name, email, password
    */
   createUser(input: CreateUserInput): Promise<User>;
-  /**
-   * Increment user counter
-   * @param id user id
-   */
-  incrementUserCounter(id: string): Promise<User>;
 }
 
 export class PrismaSignUpMutation implements SignUpMutation {
@@ -30,21 +25,6 @@ export class PrismaSignUpMutation implements SignUpMutation {
         name: input.name,
         email: input.email,
         password: input.password,
-      },
-    });
-
-    return user;
-  }
-
-  async incrementUserCounter(id: string): Promise<User> {
-    const user = await this.prisma.user.update({
-      where: {
-        id,
-      },
-      data: {
-        counter: {
-          increment: 1,
-        },
       },
     });
 
