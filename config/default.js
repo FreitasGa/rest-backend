@@ -34,8 +34,9 @@ module.exports = {
     templatesFolder: 'templates/email',
   },
   otp: {
-    length: process.env.OTP_LENGTH,
-    expiresIn: process.env.OTP_EXPIRES_IN,
+    digits: process.env.OTP_DIGITS,
+    step: process.env.OTP_STEP,
+    window: process.env.OTP_WINDOW,
   },
   cache: {
     host: process.env.CACHE_HOST,

@@ -6,12 +6,10 @@ import type { OtpService } from './service';
 
 export class HotpOtpService implements OtpService {
   constructor() {
-    const length: number = config.get('otp.length');
-    const expiresIn: string = config.get('otp.expiresIn');
-
     totp.options = {
-      digits: length,
-      step: ms(expiresIn),
+      step: ms(config.get('otp.step') as string),
+      window: parseInt(config.get('otp.window'), 10),
+      digits: parseInt(config.get('otp.digits'), 10),
     };
   }
 

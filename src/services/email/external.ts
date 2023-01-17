@@ -49,7 +49,6 @@ export class NodemailerEmailService implements EmailService {
     const html = compileTemplate({
       ...options.data,
       appName: config.get('app.name'),
-      codeTime: config.get('otp.expiresIn'),
     });
 
     await this.transporter.sendMail({
