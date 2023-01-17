@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import type { HashService } from './service';
 
 export class BcryptHashService implements HashService {
-  async hash(password: string, salt = 16): Promise<string> {
+  async hash(password: string, salt = 12): Promise<string> {
     return bcrypt.hash(password, salt);
   }
 
