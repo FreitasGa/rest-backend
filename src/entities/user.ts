@@ -5,7 +5,6 @@ export class User {
   name: string;
   confirmed: boolean;
   secret: string;
-  counter: number;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
@@ -18,7 +17,6 @@ export class User {
     this.name = input.name;
     this.confirmed = input.confirmed;
     this.secret = input.secret;
-    this.counter = input.counter;
     this.createdAt = input.createdAt;
     this.updatedAt = input.updatedAt;
     this.deletedAt = input.deletedAt;
