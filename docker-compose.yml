@@ -62,10 +62,10 @@ services:
       - EMAIL_FROM
       - DATABASE_URL=postgresql://postgres:postgres@database:5432/rest?schema=public
       - CACHE_HOST=cache
-      - CACHE_PORT
+      - CACHE_PORT=6379
       - CACHE_PASSWORD
       - QUEUE_HOST=queue
-      - QUEUE_PORT
+      - QUEUE_PORT=6379
       - QUEUE_PASSWORD
       - QUEUE_EMAIL_ATTEMPTS
       - QUEUE_EMAIL_DELAY
