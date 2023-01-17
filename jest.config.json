@@ -8,7 +8,7 @@
     "json",
     "ts"
   ],
-  "coverageDirectory": "../coverage",
+  "coverageDirectory": "./coverage",
   "collectCoverageFrom": [
     "src/**/*.ts"
   ],
