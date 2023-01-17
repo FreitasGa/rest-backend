@@ -33,6 +33,10 @@ module.exports = {
     from: process.env.EMAIL_FROM,
     templatesFolder: 'templates/email',
   },
+  otp: {
+    length: process.env.OTP_LENGTH,
+    expiresIn: process.env.OTP_EXPIRES_IN,
+  },
   cache: {
     host: process.env.CACHE_HOST,
     port: process.env.CACHE_PORT,
