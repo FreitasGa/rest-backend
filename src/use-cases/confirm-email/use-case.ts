@@ -7,8 +7,7 @@ import type { UnknownError } from '@errors/unknown-error';
 import type { OtpService } from '@services/otp/service';
 import type { ConfirmEmailInput, ConfirmEmailOutput } from './dtos';
 import { InvalidCodeError, UserNotFoundError } from './errors';
-import type { ConfirmEmailMutation } from './mutation';
-import type { ConfirmEmailQuery } from './query';
+import type { ConfirmEmailRepository } from './repository';
 
 export type Input = ConfirmEmailInput;
 export type FailureOutput = BusinessError | ApplicationError | UnknownError;
@@ -20,8 +19,7 @@ export class ConfirmEmailUseCase extends UseCase<
   SuccessOutput
 > {
   constructor(
-    private readonly query: ConfirmEmailQuery,
-    private readonly mutation: ConfirmEmailMutation,
+    private readonly repository: ConfirmEmailRepository,
     private readonly otpService: OtpService
   ) {
     super();
@@ -49,7 +47,7 @@ export class ConfirmEmailUseCase extends UseCase<
   protected async execute(
     input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
-    const user = await this.query.getUser(input.email);
+    const user = await this.repository.getUser(input.email);
 
     if (!user) {
       return wrong(new UserNotFoundError());
@@ -61,7 +59,7 @@ export class ConfirmEmailUseCase extends UseCase<
       return wrong(new InvalidCodeError());
     }
 
-    await this.mutation.confirmUser(user.id);
+    await this.repository.confirmUser(user.id);
 
     return right(undefined);
   }

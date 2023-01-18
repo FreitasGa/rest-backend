@@ -2,35 +2,30 @@ import type { User } from '@entities/user';
 import { InputValidationError } from '@errors/input-validation-error';
 import { MockOtpService } from '@services/otp/mock';
 import { InvalidCodeError, UserNotFoundError } from '../errors';
-import type { ConfirmEmailMutation } from '../mutation';
-import type { ConfirmEmailQuery } from '../query';
-import { SuccessOutput, ConfirmEmailUseCase } from '../use-case';
+import type { ConfirmEmailRepository } from '../repository';
+import { ConfirmEmailUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
-import { getUser } from './fixtures/query';
+import { confirmUser, getUser } from './fixtures/repository';
 
-class MockConfirmEmailQuery implements ConfirmEmailQuery {
+class MockConfirmEmailRepository implements ConfirmEmailRepository {
+  confirmUser = jest.fn(async (_id: string): Promise<void> => confirmUser);
   getUser = jest.fn(async (_email: string): Promise<User | null> => getUser);
 }
 
-class MockConfirmEmailMutation implements ConfirmEmailMutation {
-  confirmUser = jest.fn(async (_id: string): Promise<void> => undefined);
-}
-
-const query = new MockConfirmEmailQuery();
-const mutation = new MockConfirmEmailMutation();
+const repository = new MockConfirmEmailRepository();
 
 async function buildUseCase() {
   const otpService = new MockOtpService();
 
-  return new ConfirmEmailUseCase(query, mutation, otpService);
+  return new ConfirmEmailUseCase(repository, otpService);
 }
 
 describe('ConfirmEmailUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
-    query.getUser.mockResolvedValueOnce(getUser);
-    mutation.confirmUser.mockResolvedValueOnce(undefined);
+    repository.confirmUser.mockResolvedValueOnce(confirmUser);
+    repository.getUser.mockResolvedValueOnce(getUser);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -51,8 +46,8 @@ describe('ConfirmEmailUseCase', () => {
   });
 
   it('should fail with UserNotFoundError when user not found', async () => {
-    query.getUser.mockResolvedValueOnce(null);
-    mutation.confirmUser.mockResolvedValueOnce(undefined);
+    repository.confirmUser.mockResolvedValueOnce(confirmUser);
+    repository.getUser.mockResolvedValueOnce(null);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -62,8 +57,8 @@ describe('ConfirmEmailUseCase', () => {
   });
 
   it('should fail with InvalidCodeError when code is invalid', async () => {
-    query.getUser.mockResolvedValueOnce(getUser);
-    mutation.confirmUser.mockResolvedValueOnce(undefined);
+    repository.confirmUser.mockResolvedValueOnce(confirmUser);
+    repository.getUser.mockResolvedValueOnce(getUser);
 
     const useCase = await buildUseCase();
     const result = await useCase.run({

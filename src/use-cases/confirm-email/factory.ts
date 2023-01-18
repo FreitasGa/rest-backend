@@ -1,13 +1,11 @@
 import { prisma } from '@modules/database';
 import { HotpOtpService } from '@services/otp/external';
-import { PrismaConfirmEmailMutation } from './mutation';
-import { PrismaConfirmEmailQuery } from './query';
+import { PrismaConfirmEmailRepository } from './repository';
 import { ConfirmEmailUseCase } from './use-case';
 
 export async function buildUseCase(): Promise<ConfirmEmailUseCase> {
-  const query = new PrismaConfirmEmailQuery(prisma);
-  const mutation = new PrismaConfirmEmailMutation(prisma);
+  const repository = new PrismaConfirmEmailRepository(prisma);
   const optService = new HotpOtpService();
 
-  return new ConfirmEmailUseCase(query, mutation, optService);
+  return new ConfirmEmailUseCase(repository, optService);
 }
