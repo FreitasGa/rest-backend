@@ -1,10 +1,6 @@
 import type { Prisma } from '@prisma/client';
 
 export interface SignUpQuery {
-  /**
-   * Check if user exists
-   * @param email user email
-   */
   userExists(email: string): Promise<boolean>;
 }
 

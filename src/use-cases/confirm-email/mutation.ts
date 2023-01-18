@@ -1,10 +1,6 @@
 import type { Prisma } from '@prisma/client';
 
 export interface ConfirmEmailMutation {
-  /**
-   * Confirm user
-   * @param id user id
-   */
   confirmUser(id: string): Promise<void>;
 }
 

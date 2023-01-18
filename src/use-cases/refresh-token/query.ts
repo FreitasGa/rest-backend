@@ -3,10 +3,6 @@ import type { Prisma } from '@prisma/client';
 import type { User } from '@entities/user';
 
 export interface RefreshTokenQuery {
-  /**
-   * Get user by id
-   * @param id user id
-   */
   getUser(id: string): Promise<User | null>;
 }
 

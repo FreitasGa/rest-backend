@@ -3,10 +3,6 @@ import type { Prisma } from '@prisma/client';
 import type { User } from '@entities/user';
 
 export interface SingInQuery {
-  /**
-   * Get user by email
-   * @param email user email
-   */
   getUser(email: string): Promise<User | null>;
 }
 

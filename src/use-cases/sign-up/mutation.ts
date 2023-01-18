@@ -9,10 +9,6 @@ export type CreateUserInput = {
 };
 
 export interface SignUpMutation {
-  /**
-   * Create user
-   * @param input data: name, email, password
-   */
   createUser(input: CreateUserInput): Promise<User>;
 }
 
