@@ -8,7 +8,7 @@ import type { HashService } from '@services/hash/service';
 import type { TokenService } from '@services/token/service';
 import type { SignInInput, SignInOutput } from './dtos';
 import { InvalidCredentialsError } from './errors';
-import type { SingInQuery } from './query';
+import type { SingInRepository } from './repository';
 
 export type Input = SignInInput;
 export type FailureOutput = BusinessError | UnknownError | ApplicationError;
@@ -20,7 +20,7 @@ export class SignInUseCase extends UseCase<
   SuccessOutput
 > {
   constructor(
-    private readonly query: SingInQuery,
+    private readonly repository: SingInRepository,
     private readonly hashService: HashService,
     private readonly tokenService: TokenService
   ) {
@@ -51,7 +51,7 @@ export class SignInUseCase extends UseCase<
   protected async execute(
     input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
-    const user = await this.query.getUser(input.email);
+    const user = await this.repository.getUser(input.email);
 
     if (!user) {
       return wrong(new InvalidCredentialsError());

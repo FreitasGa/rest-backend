@@ -5,29 +5,29 @@ import { InputValidationError } from '@errors/input-validation-error';
 import { MockHashService } from '@services/hash/mock';
 import { MockTokenService } from '@services/token/mock';
 import { InvalidCredentialsError } from '../errors';
-import type { SingInQuery } from '../query';
+import type { SingInRepository } from '../repository';
 import { SignInUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
-import { getUser } from './fixtures/query';
+import { getUser } from './fixtures/repository';
 
-class MockSignInQuery implements SingInQuery {
+class MockSignInRepository implements SingInRepository {
   getUser = jest.fn(async (_email: string): Promise<User | null> => getUser);
 }
 
-const query = new MockSignInQuery();
+const repository = new MockSignInRepository();
 
 async function buildUseCase() {
   const hashService = new MockHashService();
   const tokenService = new MockTokenService();
 
-  return new SignInUseCase(query, hashService, tokenService);
+  return new SignInUseCase(repository, hashService, tokenService);
 }
 
 describe('SignInUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
-    query.getUser.mockResolvedValueOnce(getUser);
+    repository.getUser.mockResolvedValueOnce(getUser);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -48,7 +48,7 @@ describe('SignInUseCase', () => {
   });
 
   it('should fail with InvalidCredentialsError when user not found', async () => {
-    query.getUser.mockResolvedValueOnce(null);
+    repository.getUser.mockResolvedValueOnce(null);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -58,7 +58,7 @@ describe('SignInUseCase', () => {
   });
 
   it('should fail with InvalidCredentialsError when user is blocked', async () => {
-    query.getUser.mockResolvedValueOnce({
+    repository.getUser.mockResolvedValueOnce({
       ...getUser,
       blockedTill: addDays(new Date(), 1),
     });
@@ -71,7 +71,7 @@ describe('SignInUseCase', () => {
   });
 
   it('should fail with InvalidCredentialsError when password is invalid', async () => {
-    query.getUser.mockResolvedValueOnce(getUser);
+    repository.getUser.mockResolvedValueOnce(getUser);
 
     const useCase = await buildUseCase();
     const result = await useCase.run({

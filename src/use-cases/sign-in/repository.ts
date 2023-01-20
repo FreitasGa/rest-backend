@@ -2,11 +2,11 @@ import type { Prisma } from '@prisma/client';
 
 import type { User } from '@entities/user';
 
-export interface SingInQuery {
+export interface SingInRepository {
   getUser(email: string): Promise<User | null>;
 }
 
-export class PrismaSingInQuery implements SingInQuery {
+export class PrismaSingInRepository implements SingInRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async getUser(email: string): Promise<User | null> {
