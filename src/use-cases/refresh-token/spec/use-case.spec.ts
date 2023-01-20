@@ -6,23 +6,23 @@ import { RefreshTokenUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
 import { getUser } from './fixtures/repository';
 
-class MockRefreshTokenQuery implements RefreshTokenRepository {
+class MockRefreshTokenRepository implements RefreshTokenRepository {
   getUser = jest.fn(async (_id: string): Promise<User | null> => getUser);
 }
 
-const query = new MockRefreshTokenQuery();
+const repository = new MockRefreshTokenRepository();
 
 async function buildUseCase() {
   const tokenService = new MockTokenService();
 
-  return new RefreshTokenUseCase(query, tokenService);
+  return new RefreshTokenUseCase(repository, tokenService);
 }
 
 describe('RefreshTokenUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
-    query.getUser.mockResolvedValueOnce(getUser);
+    repository.getUser.mockResolvedValueOnce(getUser);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -32,7 +32,7 @@ describe('RefreshTokenUseCase', () => {
   });
 
   it('should fail with UserNotFoundError when user not found', async () => {
-    query.getUser.mockResolvedValueOnce(null);
+    repository.getUser.mockResolvedValueOnce(null);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);

@@ -19,7 +19,7 @@ export class RefreshTokenUseCase extends UseCase<
   SuccessOutput
 > {
   constructor(
-    private readonly query: RefreshTokenRepository,
+    private readonly repository: RefreshTokenRepository,
     private readonly tokenService: TokenService
   ) {
     super();
@@ -38,7 +38,7 @@ export class RefreshTokenUseCase extends UseCase<
   ): Promise<Either<FailureOutput, SuccessOutput>> {
     const payload = this.tokenService.verify(input.refreshToken);
 
-    const user = await this.query.getUser(payload.sub);
+    const user = await this.repository.getUser(payload.sub);
 
     if (!user) {
       return wrong(new UserNotFoundError());
