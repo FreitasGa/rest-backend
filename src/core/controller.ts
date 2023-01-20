@@ -3,74 +3,86 @@ import { StatusCodes } from 'http-status-codes';
 
 import { Right, Wrong } from './either';
 
-export abstract class Controller<L extends Error, R> {
-  getErrorMap<K extends string>(v: {
-    [key in K]: (req: Request, res: Response, result: L | Wrong<L, R>) => L;
+export abstract class Controller<FailureOutput extends Error, SuccessOutput> {
+  getErrorMap<ErrorTypes extends string>(error: {
+    [Type in ErrorTypes]: (
+      req: Request,
+      res: Response,
+      result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
+    ) => FailureOutput;
   }) {
-    return v;
+    return error;
   }
 
   protected ok(
     req: Request,
     res: Response,
-    result: Right<L, R>
-  ): R | undefined {
+    result: Right<FailureOutput, SuccessOutput>
+  ): SuccessOutput | undefined {
     return this.sendSuccess(req, res, StatusCodes.OK, result);
   }
 
   protected created(
     req: Request,
     res: Response,
-    result: Right<L, R>
-  ): R | undefined {
+    result: Right<FailureOutput, SuccessOutput>
+  ): SuccessOutput | undefined {
     return this.sendSuccess(req, res, StatusCodes.CREATED, result);
   }
 
   protected noContent(
     req: Request,
     res: Response,
-    result: Right<L, R>
-  ): R | undefined {
+    result: Right<FailureOutput, SuccessOutput>
+  ): SuccessOutput | undefined {
     return this.sendSuccess(req, res, StatusCodes.NO_CONTENT, result);
   }
 
   protected badRequest(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>
-  ): L {
+    result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
+  ): FailureOutput {
     return this.sendFailure(req, res, StatusCodes.BAD_REQUEST, result);
   }
 
-  protected notFound(req: Request, res: Response, result: L | Wrong<L, R>): L {
+  protected notFound(
+    req: Request,
+    res: Response,
+    result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
+  ): FailureOutput {
     return this.sendFailure(req, res, StatusCodes.NOT_FOUND, result);
   }
 
-  protected conflict(req: Request, res: Response, result: L | Wrong<L, R>): L {
+  protected conflict(
+    req: Request,
+    res: Response,
+    result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
+  ): FailureOutput {
     return this.sendFailure(req, res, StatusCodes.CONFLICT, result);
   }
 
   protected unprocessableEntity(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>
-  ): L {
+    result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
+  ): FailureOutput {
     return this.sendFailure(req, res, StatusCodes.UNPROCESSABLE_ENTITY, result);
   }
 
   protected tooManyRequests(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>
-  ): L {
+    result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
+  ): FailureOutput {
     return this.sendFailure(req, res, StatusCodes.TOO_MANY_REQUESTS, result);
   }
 
   protected internalServerError(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>
-  ): L {
+    result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
+  ): FailureOutput {
     return this.sendFailure(
       req,
       res,
@@ -82,16 +94,16 @@ export abstract class Controller<L extends Error, R> {
   protected notImplemented(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>
-  ): L {
+    result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
+  ): FailureOutput {
     return this.sendFailure(req, res, StatusCodes.NOT_IMPLEMENTED, result);
   }
 
   protected serviceUnavailable(
     req: Request,
     res: Response,
-    result: L | Wrong<L, R>
-  ): L {
+    result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
+  ): FailureOutput {
     return this.sendFailure(req, res, StatusCodes.SERVICE_UNAVAILABLE, result);
   }
 
@@ -99,8 +111,8 @@ export abstract class Controller<L extends Error, R> {
     req: Request,
     res: Response,
     status: StatusCodes,
-    result: Right<L, R>
-  ): R | undefined {
+    result: Right<FailureOutput, SuccessOutput>
+  ): SuccessOutput | undefined {
     const response = result?.value;
 
     console.info(
@@ -118,8 +130,8 @@ export abstract class Controller<L extends Error, R> {
     req: Request,
     res: Response,
     status: StatusCodes,
-    result: L | Wrong<L, R>
-  ): L {
+    result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
+  ): FailureOutput {
     const response = result instanceof Wrong ? result.value : result;
     const error = { name: response.name, message: response.message };
 
@@ -140,4 +152,9 @@ export abstract class Controller<L extends Error, R> {
 
     return response;
   }
+
+  abstract handle(
+    req: Request,
+    res: Response
+  ): Promise<SuccessOutput | FailureOutput | undefined>;
 }

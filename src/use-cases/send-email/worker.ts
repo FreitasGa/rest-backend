@@ -1,18 +1,14 @@
-import { Job } from '@decorators/queue/job';
-import { Worker } from '@decorators/queue/worker';
-import type { SendEmailOptions, Template } from '@services/email/service';
+import { Data, Worker } from '@core/worker';
+import { BullJob } from '@decorators/queue/job';
+import { BullWorker } from '@decorators/queue/worker';
 import { buildUseCase } from './factory';
+import type { Input } from './use-case';
 
-type WorkerData = {
-  template: Template;
-  options: SendEmailOptions<Template>;
-};
-
-@Worker('EmailTransactionQueue')
-export class SendEmailWorker {
-  @Job()
-  async handle(data: WorkerData): Promise<void> {
+@BullWorker('EmailTransactionQueue')
+export class SendEmailWorker extends Worker {
+  @BullJob()
+  async handle(data: Data): Promise<void> {
     const useCase = await buildUseCase();
-    await useCase.run(data);
+    await useCase.run(data as Input);
   }
 }

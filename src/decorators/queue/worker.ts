@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Worker as BullWorker } from 'bullmq';
+import { Worker } from 'bullmq';
 import config from 'config';
 
 import type { Queue } from '@services/queue';
 
-export function Worker(queue: Queue): ClassDecorator {
+export function BullWorker(queue: Queue): ClassDecorator {
   return function (target: Function) {
     const metadata = Reflect.getMetadata('bull:jobs', target.prototype) || [];
-    new BullWorker(
+    new Worker(
       queue,
       async (job) => {
         for (const jobMetadata of metadata) {
