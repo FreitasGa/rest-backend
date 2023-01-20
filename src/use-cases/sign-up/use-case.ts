@@ -9,8 +9,7 @@ import type { OtpService } from '@services/otp/service';
 import type { EmailQueueService } from '@services/queue/email/service';
 import type { SignUpInput, SignUpOutput } from './dtos';
 import { InvalidCredentialsError } from './errors';
-import type { SignUpMutation } from './mutation';
-import type { SignUpQuery } from './query';
+import type { SignUpRepository } from './repository';
 
 export type Input = SignUpInput;
 export type FailureOutput = BusinessError | UnknownError | ApplicationError;
@@ -22,8 +21,7 @@ export class SignUpUseCase extends UseCase<
   SuccessOutput
 > {
   constructor(
-    private readonly query: SignUpQuery,
-    private readonly mutation: SignUpMutation,
+    private readonly repository: SignUpRepository,
     private readonly hashService: HashService,
     private readonly otpService: OtpService,
     private readonly emailQueueService: EmailQueueService
@@ -57,7 +55,7 @@ export class SignUpUseCase extends UseCase<
   protected async execute(
     input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
-    const userExists = await this.query.userExists(input.email);
+    const userExists = await this.repository.userExists(input.email);
 
     if (userExists) {
       return wrong(new InvalidCredentialsError());
@@ -65,7 +63,7 @@ export class SignUpUseCase extends UseCase<
 
     const hashedPassword = await this.hashService.hash(input.password);
 
-    const user = await this.mutation.createUser({
+    const user = await this.repository.createUser({
       name: input.name,
       email: input.email,
       password: hashedPassword,

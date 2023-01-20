@@ -4,25 +4,19 @@ import { MockHashService } from '@services/hash/mock';
 import { MockOtpService } from '@services/otp/mock';
 import { MockEmailQueueService } from '@services/queue/email/mock';
 import { InvalidCredentialsError } from '../errors';
-import type { CreateUserInput, SignUpMutation } from '../mutation';
-import type { SignUpQuery } from '../query';
+import type { CreateUserInput, SignUpRepository } from '../repository';
 import { SignUpUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
-import { createUser } from './fixtures/mutation';
-import { userExists } from './fixtures/query';
+import { createUser, userExists } from './fixtures/repository';
 
-class MockSignUpQuery implements SignUpQuery {
-  userExists = jest.fn(async (_email: string): Promise<boolean> => userExists);
-}
-
-class MockSignUpMutation implements SignUpMutation {
+class MockSignUpRepository implements SignUpRepository {
   createUser = jest.fn(
     async (_input: CreateUserInput): Promise<User> => createUser
   );
+  userExists = jest.fn(async (_email: string): Promise<boolean> => userExists);
 }
 
-const query = new MockSignUpQuery();
-const mutation = new MockSignUpMutation();
+const repository = new MockSignUpRepository();
 
 async function buildUseCase() {
   const hashService = new MockHashService();
@@ -30,8 +24,7 @@ async function buildUseCase() {
   const emailQueueService = new MockEmailQueueService();
 
   return new SignUpUseCase(
-    query,
-    mutation,
+    repository,
     hashService,
     otpService,
     emailQueueService
@@ -42,8 +35,8 @@ describe('SignUpUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
-    query.userExists.mockResolvedValueOnce(false);
-    mutation.createUser.mockResolvedValueOnce(createUser);
+    repository.createUser.mockResolvedValueOnce(createUser);
+    repository.userExists.mockResolvedValueOnce(false);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -65,8 +58,8 @@ describe('SignUpUseCase', () => {
   });
 
   it('should fail with InvalidCredentialsError when user already exists', async () => {
-    query.userExists.mockResolvedValueOnce(true);
-    mutation.createUser.mockResolvedValueOnce(createUser);
+    repository.createUser.mockResolvedValueOnce(createUser);
+    repository.userExists.mockResolvedValueOnce(true);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);

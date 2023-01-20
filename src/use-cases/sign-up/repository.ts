@@ -8,11 +8,12 @@ export type CreateUserInput = {
   password: string;
 };
 
-export interface SignUpMutation {
+export interface SignUpRepository {
   createUser(input: CreateUserInput): Promise<User>;
+  userExists(email: string): Promise<boolean>;
 }
 
-export class PrismaSignUpMutation implements SignUpMutation {
+export class PrismaSignUpRepository implements SignUpRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async createUser(input: CreateUserInput): Promise<User> {
@@ -25,5 +26,13 @@ export class PrismaSignUpMutation implements SignUpMutation {
     });
 
     return user;
+  }
+
+  async userExists(email: string): Promise<boolean> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    return !!user;
   }
 }
