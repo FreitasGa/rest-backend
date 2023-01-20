@@ -1,6 +1,6 @@
 import { prisma } from '@modules/database';
 import { JwtTokenService } from '@services/token/external';
-import { PrismaRefreshTokenQuery } from './query';
+import { PrismaRefreshTokenQuery } from './repository';
 import { RefreshTokenUseCase } from './use-case';
 
 export async function buildUseCase(): Promise<RefreshTokenUseCase> {

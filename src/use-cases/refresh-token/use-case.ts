@@ -7,7 +7,7 @@ import type { UnknownError } from '@errors/unknown-error';
 import type { TokenService } from '@services/token/service';
 import type { RefreshTokenInput, RefreshTokenOutput } from './dtos';
 import { UserNotFoundError } from './errors';
-import type { RefreshTokenQuery } from './query';
+import type { RefreshTokenRepository } from './repository';
 
 export type Input = RefreshTokenInput;
 export type FailureOutput = BusinessError | ApplicationError | UnknownError;
@@ -19,7 +19,7 @@ export class RefreshTokenUseCase extends UseCase<
   SuccessOutput
 > {
   constructor(
-    private readonly query: RefreshTokenQuery,
+    private readonly query: RefreshTokenRepository,
     private readonly tokenService: TokenService
   ) {
     super();

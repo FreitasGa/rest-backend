@@ -1,12 +1,12 @@
 import type { User } from '@entities/user';
 import { MockTokenService } from '@services/token/mock';
 import { UserNotFoundError } from '../errors';
-import type { RefreshTokenQuery } from '../query';
+import type { RefreshTokenRepository } from '../repository';
 import { RefreshTokenUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
-import { getUser } from './fixtures/query';
+import { getUser } from './fixtures/repository';
 
-class MockRefreshTokenQuery implements RefreshTokenQuery {
+class MockRefreshTokenQuery implements RefreshTokenRepository {
   getUser = jest.fn(async (_id: string): Promise<User | null> => getUser);
 }
 
