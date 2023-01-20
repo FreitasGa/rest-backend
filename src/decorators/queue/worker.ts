@@ -12,7 +12,7 @@ export function BullWorker(queue: Queue): ClassDecorator {
       async (job) => {
         for (const jobMetadata of metadata) {
           if (!jobMetadata.name || jobMetadata.name === job.name) {
-            await target.prototype[jobMetadata.method](job.data);
+            await target.prototype[jobMetadata.method](job);
           }
         }
       },
