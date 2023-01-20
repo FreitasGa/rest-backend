@@ -2,12 +2,12 @@ import type { Prisma } from '@prisma/client';
 
 import type { User } from '@entities/user';
 
-export interface ResendEmailConfirmationQuery {
+export interface ResendEmailConfirmationRepository {
   getUser(email: string): Promise<User | null>;
 }
 
-export class PrismaResendEmailConfirmationQuery
-  implements ResendEmailConfirmationQuery
+export class PrismaResendEmailConfirmationRepository
+  implements ResendEmailConfirmationRepository
 {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 

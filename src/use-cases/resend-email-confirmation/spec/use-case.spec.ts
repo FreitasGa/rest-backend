@@ -3,23 +3,25 @@ import { InputValidationError } from '@errors/input-validation-error';
 import { MockOtpService } from '@services/otp/mock';
 import { MockEmailQueueService } from '@services/queue/email/mock';
 import { UserAlreadyConfirmedError, UserNotFoundError } from '../errors';
-import type { ResendEmailConfirmationQuery } from '../query';
+import type { ResendEmailConfirmationRepository } from '../repository';
 import { ResendEmailConfirmationUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
-import { getUser } from './fixtures/query';
+import { getUser } from './fixtures/repository';
 
-class MockResendEmailConfirmationQuery implements ResendEmailConfirmationQuery {
+class MockResendEmailConfirmationRepository
+  implements ResendEmailConfirmationRepository
+{
   getUser = jest.fn(async (_email: string): Promise<User | null> => getUser);
 }
 
-const query = new MockResendEmailConfirmationQuery();
+const repository = new MockResendEmailConfirmationRepository();
 
 async function buildUseCase() {
   const otpService = new MockOtpService();
   const emailQueueService = new MockEmailQueueService();
 
   return new ResendEmailConfirmationUseCase(
-    query,
+    repository,
     otpService,
     emailQueueService
   );
@@ -29,7 +31,7 @@ describe('ResendEmailConfirmationUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
-    query.getUser.mockResolvedValueOnce(getUser);
+    repository.getUser.mockResolvedValueOnce(getUser);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -49,7 +51,7 @@ describe('ResendEmailConfirmationUseCase', () => {
   });
 
   it('should fail with UserNotFoundError when user not found', async () => {
-    query.getUser.mockResolvedValueOnce(null);
+    repository.getUser.mockResolvedValueOnce(null);
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);
@@ -59,7 +61,7 @@ describe('ResendEmailConfirmationUseCase', () => {
   });
 
   it('should fail with UserAlreadyConfirmedError when user already confirmed', async () => {
-    query.getUser.mockResolvedValueOnce({ ...getUser, confirmed: true });
+    repository.getUser.mockResolvedValueOnce({ ...getUser, confirmed: true });
 
     const useCase = await buildUseCase();
     const result = await useCase.run(input);

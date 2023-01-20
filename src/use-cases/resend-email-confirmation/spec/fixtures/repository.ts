@@ -7,7 +7,6 @@ export const getUser = new User({
   password: 'Passw0rd!',
   confirmed: false,
   secret: 'secret',
-  counter: 0,
   blockedTill: null,
   createdAt: new Date(),
   updatedAt: new Date(),

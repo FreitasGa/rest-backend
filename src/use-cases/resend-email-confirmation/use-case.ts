@@ -11,7 +11,7 @@ import type {
   ResendEmailConfirmationOutput,
 } from './dtos';
 import { UserAlreadyConfirmedError, UserNotFoundError } from './errors';
-import type { ResendEmailConfirmationQuery } from './query';
+import type { ResendEmailConfirmationRepository } from './repository';
 
 export type Input = ResendEmailConfirmationInput;
 export type FailureOutput = BusinessError | ApplicationError | UnknownError;
@@ -23,7 +23,7 @@ export class ResendEmailConfirmationUseCase extends UseCase<
   SuccessOutput
 > {
   constructor(
-    private readonly query: ResendEmailConfirmationQuery,
+    private readonly repository: ResendEmailConfirmationRepository,
     private readonly otpService: OtpService,
     private readonly emailQueueService: EmailQueueService
   ) {
@@ -47,7 +47,7 @@ export class ResendEmailConfirmationUseCase extends UseCase<
   protected async execute(
     input: Input
   ): Promise<Either<FailureOutput, SuccessOutput>> {
-    const user = await this.query.getUser(input.email);
+    const user = await this.repository.getUser(input.email);
 
     if (!user) {
       return wrong(new UserNotFoundError());
