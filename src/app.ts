@@ -82,12 +82,34 @@ export class App extends OvernightServer {
     );
   }
 
+  private async setupSchedulers(): Promise<void> {
+    const files = await glob(`${__dirname}/use-cases/**/scheduler.[t|j]s`, {
+      absolute: true,
+    });
+
+    const schedulers = await Promise.all(
+      files.map(async (file) => {
+        const module = await import(file);
+        return module[Object.keys(module)[0]];
+      })
+    );
+
+    schedulers.forEach((Scheduler) => new Scheduler());
+
+    console.info(
+      `Schedulers: ${JSON.stringify(
+        schedulers.map((Scheduler) => Scheduler.name)
+      )}`
+    );
+  }
+
   async start(port = 3000): Promise<void> {
     this.setupExpress();
     this.setupDatabase();
     this.setupCache();
     await this.setupControllers();
     await this.setupWorkers();
+    await this.setupSchedulers();
 
     const server = this.app.listen(port, () => {
       const tz: string = config.get('app.tz');

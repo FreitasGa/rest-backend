@@ -5,16 +5,15 @@ export function CronScheduler(cronTime: string | Date): ClassDecorator {
   return function (target: Function) {
     const jobs = Reflect.getMetadata('cron:jobs', target.prototype) || [];
 
-    new CronJob(
+    new CronJob({
       cronTime,
-      async () => {
+      onTick: async () => {
         for (const job of jobs) {
           await target.prototype[job.method]();
         }
       },
-      null,
-      true,
-      'UTC'
-    );
+      start: true,
+      timeZone: 'UTC',
+    });
   };
 }

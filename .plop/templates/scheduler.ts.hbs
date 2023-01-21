@@ -1,0 +1,25 @@
+import { Scheduler } from '@core/scheduler';
+import { CronJob } from '@decorators/cron/job';
+import { CronScheduler } from '@decorators/cron/scheduler';
+import { buildUseCase } from './factory';
+import type { FailureOutput, SuccessOutput } from './use-case';
+
+@CronScheduler('0 0 0 * * *')
+export class {{ pascalCase name }}Scheduler extends Scheduler<
+  FailureOutput,
+  SuccessOutput
+> {
+  @CronJob()
+  async handle(): Promise<SuccessOutput | FailureOutput | undefined> {
+    const useCase = buildUseCase();
+    const result = await useCase.run();
+
+    if (result.isWrong()) {
+      const error = result.value;
+
+      return this.failure(error);
+    }
+
+    return this.success(result);
+  }
+}

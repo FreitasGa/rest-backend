@@ -60,13 +60,6 @@ export default function (plop: NodePlopAPI) {
         when: (answers) => answers.handler === handlers.schedule,
       },
       {
-        type: 'input',
-        name: 'schedule.timezone',
-        message: 'What is your timezone? (default: UTC)',
-        default: 'UTC',
-        when: (answers) => answers.handler === handlers.schedule,
-      },
-      {
         type: 'confirm',
         name: 'test.unit',
         message: 'Do you want to create a unit test? (default: true)',
@@ -74,7 +67,6 @@ export default function (plop: NodePlopAPI) {
       },
     ],
     actions: (answers) => {
-      console.log(answers);
       const actions = [
         {
           type: 'add',
@@ -122,6 +114,15 @@ export default function (plop: NodePlopAPI) {
           type: 'add',
           path: '../src/use-cases/{{kebabCase name}}/worker.ts',
           templateFile: 'templates/worker.ts.hbs',
+          skipIfExists: true,
+        });
+      }
+
+      if (answers?.handler === handlers.schedule) {
+        actions.push({
+          type: 'add',
+          path: '../src/use-cases/{{kebabCase name}}/scheduler.ts',
+          templateFile: 'templates/scheduler.ts.hbs',
           skipIfExists: true,
         });
       }
