@@ -11,7 +11,7 @@ export class {{ pascalCase name }}Worker extends Worker<
   FailureOutput,
   SuccessOutput
 > {
-  @BullJob('{{ queue.job }}')
+  @BullJob({{#if queue.job}}'{{ queue.job }}'{{/if}})
   async handle(job: Job): Promise<SuccessOutput | FailureOutput | undefined> {
     const useCase = buildUseCase();
     const result = await useCase.run(job.data as Input);

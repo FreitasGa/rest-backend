@@ -2,9 +2,9 @@ import type { NodePlopAPI } from 'plop';
 import { Queue } from '../src/services/queue';
 
 const handlers = {
-  http: 'http',
-  queue: 'queue',
-  schedule: 'schedule',
+  http: 'Http',
+  queue: 'Queue',
+  schedule: 'Schedule',
 };
 
 const queues = Object.values(Queue);
