@@ -1,28 +1,29 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Worker } from 'bullmq';
+import { Worker, ConnectionOptions } from 'bullmq';
 import config from 'config';
 
 import type { Queue } from '@services/queue';
 
 export function BullWorker(queue: Queue): ClassDecorator {
   return function (target: Function) {
-    const metadata = Reflect.getMetadata('bull:jobs', target.prototype) || [];
+    const jobs = Reflect.getMetadata('bull:jobs', target.prototype) || [];
+
+    const connection: ConnectionOptions = {
+      host: config.get('queue.host'),
+      port: config.get('queue.port'),
+      password: config.get('queue.password'),
+    };
+
     new Worker(
       queue,
-      async (job) => {
-        for (const jobMetadata of metadata) {
-          if (!jobMetadata.name || jobMetadata.name === job.name) {
-            await target.prototype[jobMetadata.method](job);
+      async (currentJob) => {
+        for (const job of jobs) {
+          if (!job.name || job.name === currentJob.name) {
+            await target.prototype[job.method](currentJob);
           }
         }
       },
-      {
-        connection: {
-          host: config.get('queue.host'),
-          port: config.get('queue.port'),
-          password: config.get('queue.password'),
-        },
-      }
+      { connection }
     );
   };
 }
