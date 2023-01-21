@@ -29,7 +29,7 @@ describe('SignInUseCase', () => {
   it('should succeed', async () => {
     repository.getUser.mockResolvedValueOnce(getUser);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isRight()).toBeTruthy();
@@ -37,7 +37,7 @@ describe('SignInUseCase', () => {
   });
 
   it('should fail with InputValidationError when input is invalid', async () => {
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run({
       email: 'invalid_email',
       password: 'invalid_password',
@@ -50,7 +50,7 @@ describe('SignInUseCase', () => {
   it('should fail with InvalidCredentialsError when user not found', async () => {
     repository.getUser.mockResolvedValueOnce(null);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isWrong()).toBeTruthy();
@@ -63,7 +63,7 @@ describe('SignInUseCase', () => {
       blockedTill: addDays(new Date(), 1),
     });
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isWrong()).toBeTruthy();
@@ -73,7 +73,7 @@ describe('SignInUseCase', () => {
   it('should fail with InvalidCredentialsError when password is invalid', async () => {
     repository.getUser.mockResolvedValueOnce(getUser);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run({
       ...input,
       password: 'invalidPassw0rd!',

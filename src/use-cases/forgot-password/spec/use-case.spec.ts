@@ -27,7 +27,7 @@ describe('ForgotPasswordUseCase', () => {
   it('should succeed', async () => {
     repository.getUser.mockResolvedValueOnce(getUser);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isRight()).toBeTruthy();
@@ -35,7 +35,7 @@ describe('ForgotPasswordUseCase', () => {
   });
 
   it('should fail with InputValidationError when input is invalid', async () => {
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run({
       email: 'invalid_email',
     });
@@ -47,7 +47,7 @@ describe('ForgotPasswordUseCase', () => {
   it('should fail with UserNotFoundError when user not found', async () => {
     repository.getUser.mockResolvedValueOnce(null);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isWrong()).toBeTruthy();

@@ -38,7 +38,7 @@ describe('SignUpUseCase', () => {
     repository.createUser.mockResolvedValueOnce(createUser);
     repository.userExists.mockResolvedValueOnce(false);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isRight()).toBeTruthy();
@@ -46,7 +46,7 @@ describe('SignUpUseCase', () => {
   });
 
   it('should fail with InputValidationError when input is invalid', async () => {
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run({
       name: 'name',
       email: 'invalid_email',
@@ -61,7 +61,7 @@ describe('SignUpUseCase', () => {
     repository.createUser.mockResolvedValueOnce(createUser);
     repository.userExists.mockResolvedValueOnce(true);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isWrong()).toBeTruthy();

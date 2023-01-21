@@ -33,7 +33,7 @@ describe('ResendEmailConfirmationUseCase', () => {
   it('should succeed', async () => {
     repository.getUser.mockResolvedValueOnce(getUser);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isRight()).toBeTruthy();
@@ -41,7 +41,7 @@ describe('ResendEmailConfirmationUseCase', () => {
   });
 
   it('should fail with InputValidationError when input is invalid', async () => {
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run({
       email: 'invalid_email',
     });
@@ -53,7 +53,7 @@ describe('ResendEmailConfirmationUseCase', () => {
   it('should fail with UserNotFoundError when user not found', async () => {
     repository.getUser.mockResolvedValueOnce(null);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isWrong()).toBeTruthy();
@@ -63,7 +63,7 @@ describe('ResendEmailConfirmationUseCase', () => {
   it('should fail with UserAlreadyConfirmedError when user already confirmed', async () => {
     repository.getUser.mockResolvedValueOnce({ ...getUser, confirmed: true });
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isWrong()).toBeTruthy();

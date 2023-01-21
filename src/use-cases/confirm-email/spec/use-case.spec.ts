@@ -27,7 +27,7 @@ describe('ConfirmEmailUseCase', () => {
     repository.confirmUser.mockResolvedValueOnce(confirmUser);
     repository.getUser.mockResolvedValueOnce(getUser);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isRight()).toBeTruthy();
@@ -35,7 +35,7 @@ describe('ConfirmEmailUseCase', () => {
   });
 
   it('should fail with InputValidationError when input is invalid', async () => {
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run({
       ...input,
       email: 'invalid_email',
@@ -49,7 +49,7 @@ describe('ConfirmEmailUseCase', () => {
     repository.confirmUser.mockResolvedValueOnce(confirmUser);
     repository.getUser.mockResolvedValueOnce(null);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isWrong()).toBeTruthy();
@@ -60,7 +60,7 @@ describe('ConfirmEmailUseCase', () => {
     repository.confirmUser.mockResolvedValueOnce(confirmUser);
     repository.getUser.mockResolvedValueOnce(getUser);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run({
       ...input,
       code: 'invalid_code',

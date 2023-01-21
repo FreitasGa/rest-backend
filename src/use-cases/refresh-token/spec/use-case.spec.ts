@@ -24,7 +24,7 @@ describe('RefreshTokenUseCase', () => {
   it('should succeed', async () => {
     repository.getUser.mockResolvedValueOnce(getUser);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isRight()).toBeTruthy();
@@ -34,7 +34,7 @@ describe('RefreshTokenUseCase', () => {
   it('should fail with UserNotFoundError when user not found', async () => {
     repository.getUser.mockResolvedValueOnce(null);
 
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isWrong()).toBeTruthy();

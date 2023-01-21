@@ -22,7 +22,7 @@ export class RefreshTokenController extends Controller<
     req: Request,
     res: Response
   ): Promise<SuccessOutput | FailureOutput | undefined> {
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(req.body as Input);
 
     if (result.isWrong()) {

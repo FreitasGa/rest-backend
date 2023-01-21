@@ -12,7 +12,7 @@ describe('SendEmailUseCase', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('should succeed', async () => {
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(input);
 
     expect(result.isRight()).toBeTruthy();

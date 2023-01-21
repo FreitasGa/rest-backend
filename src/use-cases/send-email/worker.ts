@@ -10,7 +10,7 @@ import type { FailureOutput, Input, SuccessOutput } from './use-case';
 export class SendEmailWorker extends Worker<FailureOutput, SuccessOutput> {
   @BullJob()
   async handle(job: Job): Promise<SuccessOutput | FailureOutput | undefined> {
-    const useCase = await buildUseCase();
+    const useCase = buildUseCase();
     const result = await useCase.run(job.data as Input);
 
     if (result.isWrong()) {
