@@ -14,7 +14,7 @@ class MockConfirmEmailRepository implements ConfirmEmailRepository {
 
 const repository = new MockConfirmEmailRepository();
 
-async function buildUseCase() {
+function buildUseCase(): ConfirmEmailUseCase {
   const otpService = new MockOtpService();
 
   return new ConfirmEmailUseCase(repository, otpService);

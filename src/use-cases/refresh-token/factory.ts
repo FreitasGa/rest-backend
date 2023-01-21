@@ -3,7 +3,7 @@ import { JwtTokenService } from '@services/token/external';
 import { PrismaRefreshTokenRepository } from './repository';
 import { RefreshTokenUseCase } from './use-case';
 
-export async function buildUseCase(): Promise<RefreshTokenUseCase> {
+export function buildUseCase(): RefreshTokenUseCase {
   const repository = new PrismaRefreshTokenRepository(prisma);
   const tokenService = new JwtTokenService();
 

@@ -3,7 +3,7 @@ import { HotpOtpService } from '@services/otp/external';
 import { PrismaConfirmEmailRepository } from './repository';
 import { ConfirmEmailUseCase } from './use-case';
 
-export async function buildUseCase(): Promise<ConfirmEmailUseCase> {
+export function buildUseCase(): ConfirmEmailUseCase {
   const repository = new PrismaConfirmEmailRepository(prisma);
   const optService = new HotpOtpService();
 

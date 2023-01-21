@@ -16,7 +16,7 @@ class MockSignInRepository implements SingInRepository {
 
 const repository = new MockSignInRepository();
 
-async function buildUseCase() {
+function buildUseCase(): SignInUseCase {
   const hashService = new MockHashService();
   const tokenService = new MockTokenService();
 

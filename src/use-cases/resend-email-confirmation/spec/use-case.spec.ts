@@ -16,7 +16,7 @@ class MockResendEmailConfirmationRepository
 
 const repository = new MockResendEmailConfirmationRepository();
 
-async function buildUseCase() {
+function buildUseCase(): ResendEmailConfirmationUseCase {
   const otpService = new MockOtpService();
   const emailQueueService = new MockEmailQueueService();
 

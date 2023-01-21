@@ -5,7 +5,7 @@ import { BullEmailQueueService } from '@services/queue/email/external';
 import { PrismaSignUpRepository } from './repository';
 import { SignUpUseCase } from './use-case';
 
-export async function buildUseCase(): Promise<SignUpUseCase> {
+export function buildUseCase(): SignUpUseCase {
   const repository = new PrismaSignUpRepository(prisma);
   const hashService = new BcryptHashService();
   const optService = new HotpOtpService();

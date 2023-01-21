@@ -2,7 +2,7 @@ import { MockEmailService } from '@services/email/mock';
 import { SendEmailUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
 
-async function buildUseCase() {
+function buildUseCase(): SendEmailUseCase {
   const emailService = new MockEmailService();
 
   return new SendEmailUseCase(emailService);

@@ -18,7 +18,7 @@ class MockSignUpRepository implements SignUpRepository {
 
 const repository = new MockSignUpRepository();
 
-async function buildUseCase() {
+function buildUseCase(): SignUpUseCase {
   const hashService = new MockHashService();
   const otpService = new MockOtpService();
   const emailQueueService = new MockEmailQueueService();

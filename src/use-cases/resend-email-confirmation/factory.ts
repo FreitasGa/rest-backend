@@ -4,7 +4,7 @@ import { BullEmailQueueService } from '@services/queue/email/external';
 import { PrismaResendEmailConfirmationRepository } from './repository';
 import { ResendEmailConfirmationUseCase } from './use-case';
 
-export async function buildUseCase(): Promise<ResendEmailConfirmationUseCase> {
+export function buildUseCase(): ResendEmailConfirmationUseCase {
   const repository = new PrismaResendEmailConfirmationRepository(prisma);
   const otpService = new HotpOtpService();
   const emailQueueService = new BullEmailQueueService();

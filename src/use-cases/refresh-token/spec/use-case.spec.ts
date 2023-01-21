@@ -12,7 +12,7 @@ class MockRefreshTokenRepository implements RefreshTokenRepository {
 
 const repository = new MockRefreshTokenRepository();
 
-async function buildUseCase() {
+function buildUseCase(): RefreshTokenUseCase {
   const tokenService = new MockTokenService();
 
   return new RefreshTokenUseCase(repository, tokenService);
