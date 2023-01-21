@@ -1,6 +1,6 @@
 import {
   Controller as OvernightController,
-  Post as OvernightPost,
+  Post as OvernightMethod,
 } from '@overnightjs/core';
 import type { Request, Response } from 'express';
 
@@ -14,7 +14,7 @@ type ErrorTypes = keyof typeof errors | 'InputValidationError' | 'UnknownError';
 
 @OvernightController('sign-up')
 export class SignUpController extends Controller<FailureOutput, SuccessOutput> {
-  @OvernightPost()
+  @OvernightMethod()
   async handle(
     req: Request,
     res: Response

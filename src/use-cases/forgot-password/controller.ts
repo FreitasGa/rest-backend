@@ -1,6 +1,6 @@
 import {
   Controller as OvernightController,
-  Post as OvernightPost,
+  Post as OvernightMethod,
 } from '@overnightjs/core';
 import type { Request, Response } from 'express';
 
@@ -17,7 +17,7 @@ export class ForgotPasswordController extends Controller<
   FailureOutput,
   SuccessOutput
 > {
-  @OvernightPost()
+  @OvernightMethod()
   async handle(
     req: Request,
     res: Response
