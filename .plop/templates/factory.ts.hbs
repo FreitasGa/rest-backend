@@ -1,0 +1,9 @@
+import { prisma } from '@modules/database';
+import { Prisma{{pascalCase name}}Repository } from './repository';
+import { {{pascalCase name}}UseCase } from './use-case';
+
+export function buildUseCase(): {{ pascalCase name }}UseCase {
+  const repository = new Prisma{{pascalCase name}}Repository(prisma);
+
+  return new {{pascalCase name}}UseCase(repository);
+}

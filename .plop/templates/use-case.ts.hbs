@@ -1,0 +1,46 @@
+import { Either, right, wrong } from '@core/either';
+import { UseCase } from '@core/use-case';
+import type { ApplicationError } from '@errors/application-error';
+import type { BusinessError } from '@errors/business-error';
+import { InputValidationError } from '@errors/input-validation-error';
+import type { UnknownError } from '@errors/unknown-error';
+import type {
+  {{ pascalCase name }}Input,
+  {{ pascalCase name }}Output,
+} from './dtos';
+import { DummyError } from './errors';
+import type { {{ pascalCase name }}Repository } from './repository';
+
+export type Input = {{ pascalCase name }}Input;
+export type FailureOutput = BusinessError | ApplicationError | UnknownError;
+export type SuccessOutput = {{ pascalCase name }}Output;
+
+export class {{ pascalCase name }}UseCase extends UseCase<
+  Input,
+  FailureOutput,
+  SuccessOutput
+> {
+  constructor(private readonly repository: {{ pascalCase name }}Repository) {
+    super();
+  }
+
+  protected validate(input: Input): Either<InputValidationError, void> {
+    if (!input) {
+      return wrong(new InputValidationError());
+    }
+
+    return right(undefined);
+  }
+
+  protected async execute(
+    input: Input
+  ): Promise<Either<FailureOutput, SuccessOutput>> {
+    if (!input) {
+      return wrong(new DummyError());
+    }
+
+    this.repository.dummy();
+
+    return right(undefined);
+  }
+}
