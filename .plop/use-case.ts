@@ -105,7 +105,7 @@ export default function (plop: NodePlopAPI) {
           path: '../src/use-cases/{{kebabCase name}}/repository.ts',
           templateFile: 'templates/repository.ts.hbs',
           skipIfExists: true,
-        }
+        },
       ];
 
       if (answers?.handler === handlers.http) {
@@ -122,6 +122,29 @@ export default function (plop: NodePlopAPI) {
           type: 'add',
           path: '../src/use-cases/{{kebabCase name}}/worker.ts',
           templateFile: 'templates/worker.ts.hbs',
+          skipIfExists: true,
+        });
+      }
+
+      if (answers?.test.unit === true) {
+        actions.push({
+          type: 'add',
+          path: '../src/use-cases/{{kebabCase name}}/spec/use-case.spec.ts',
+          templateFile: 'templates/spec/use-case.spec.ts.hbs',
+          skipIfExists: true,
+        });
+
+        actions.push({
+          type: 'add',
+          path: '../src/use-cases/{{kebabCase name}}/spec/fixtures/dtos.ts',
+          templateFile: 'templates/spec/fixtures/dtos.ts.hbs',
+          skipIfExists: true,
+        });
+
+        actions.push({
+          type: 'add',
+          path: '../src/use-cases/{{kebabCase name}}/spec/fixtures/repository.ts',
+          templateFile: 'templates/spec/fixtures/repository.ts.hbs',
           skipIfExists: true,
         });
       }
