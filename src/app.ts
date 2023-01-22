@@ -5,14 +5,12 @@ import cors, { type CorsOptions } from 'cors';
 import helmet, { type HelmetOptions } from 'helmet';
 import glob from 'tiny-glob';
 
-import { CacheModule, RedisCacheModule } from '@modules/cache';
 import { DatabaseModule, PrismaDatabaseModule } from '@modules/database';
 import { HttpServerModule, ServerModule } from '@modules/server';
 import { routeNotFound } from '@utils/http';
 
 export class App extends OvernightServer {
   private server: ServerModule;
-  private cache: CacheModule;
   private database: DatabaseModule;
 
   constructor() {
@@ -35,10 +33,6 @@ export class App extends OvernightServer {
 
   private setupDatabase(): void {
     this.database = new PrismaDatabaseModule();
-  }
-
-  private setupCache(): void {
-    this.cache = new RedisCacheModule();
   }
 
   private async setupControllers(): Promise<void> {
@@ -106,7 +100,6 @@ export class App extends OvernightServer {
   async start(port = 3000): Promise<void> {
     this.setupExpress();
     this.setupDatabase();
-    this.setupCache();
     await this.setupControllers();
     await this.setupWorkers();
     await this.setupSchedulers();
@@ -124,14 +117,12 @@ export class App extends OvernightServer {
     this.server = new HttpServerModule(server);
     this.server.handleConnections();
     await this.database.connect();
-    await this.cache.connect();
 
     process.on('SIGINT', async () => await this.stop());
     process.on('SIGTERM', async () => await this.stop());
   }
 
   async stop(): Promise<void> {
-    await this.cache.disconnect();
     await this.database.disconnect();
     this.server.handleDisconnections();
 
