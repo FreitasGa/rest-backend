@@ -2,7 +2,7 @@ import type { User } from '@entities/user';
 import { InputValidationError } from '@errors/input-validation-error';
 import { MockOtpService } from '@services/otp/mock';
 import { MockEmailQueueService } from '@services/queue/email/mock';
-import { UserNotFoundError } from '../errors';
+import { UserNotConfirmedError, UserNotFoundError } from '../errors';
 import type { ForgotPasswordRepository } from '../repository';
 import { ForgotPasswordUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
@@ -52,5 +52,18 @@ describe('ForgotPasswordUseCase', () => {
 
     expect(result.isWrong()).toBeTruthy();
     expect(result.value).toBeInstanceOf(UserNotFoundError);
+  });
+
+  it('should fail with UserNotConfirmedError when user not confirmed', async () => {
+    repository.getUser.mockResolvedValueOnce({
+      ...getUser,
+      confirmed: false,
+    });
+
+    const useCase = buildUseCase();
+    const result = await useCase.run(input);
+
+    expect(result.isWrong()).toBeTruthy();
+    expect(result.value).toBeInstanceOf(UserNotConfirmedError);
   });
 });

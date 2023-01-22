@@ -32,6 +32,7 @@ export class ForgotPasswordController extends Controller<
         InputValidationError: this.badRequest,
         UnknownError: this.internalServerError,
         UserNotFoundError: this.unprocessableEntity,
+        UserNotConfirmedError: this.unprocessableEntity,
       });
 
       const treatment = errorMap[error.constructor.name as ErrorTypes];

@@ -7,7 +7,7 @@ import type { UnknownError } from '@errors/unknown-error';
 import type { OtpService } from '@services/otp/service';
 import type { EmailQueueService } from '@services/queue/email/service';
 import type { ForgotPasswordInput, ForgotPasswordOutput } from './dtos';
-import { UserNotFoundError } from './errors';
+import { UserNotConfirmedError, UserNotFoundError } from './errors';
 import type { ForgotPasswordRepository } from './repository';
 
 export type Input = ForgotPasswordInput;
@@ -48,6 +48,10 @@ export class ForgotPasswordUseCase extends UseCase<
 
     if (!user) {
       return wrong(new UserNotFoundError());
+    }
+
+    if (!user.confirmed) {
+      return wrong(new UserNotConfirmedError());
     }
 
     const code = this.otpService.generate(user.secret);
