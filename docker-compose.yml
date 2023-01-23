@@ -33,6 +33,19 @@ services:
       - rest
     command: [redis-server, --requirepass, "redis"]
 
+  storage:
+    container_name: rest-storage
+    image: minio/minio
+    ports:
+      - 9000:9000
+      - 9001:9001
+    networks:
+      - rest
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
+    command: [server, /data, --console-address, ":9001"]
+
   backend:
     container_name: rest-backend
     image: rest-backend
@@ -45,6 +58,7 @@ services:
       - database
       - cache
       - queue
+      - storage
     environment:
       - NODE_ENV=development
       - PORT
@@ -69,6 +83,10 @@ services:
       - QUEUE_PASSWORD
       - QUEUE_EMAIL_ATTEMPTS
       - QUEUE_EMAIL_DELAY
+      - STORAGE_HOST=storage
+      - STORAGE_PORT
+      - STORAGE_USER
+      - STORAGE_PASSWORD
 
 networks:
   rest:

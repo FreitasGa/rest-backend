@@ -54,4 +54,10 @@ module.exports = {
       },
     },
   },
+  storage: {
+    host: process.env.STORAGE_HOST,
+    port: process.env.STORAGE_PORT,
+    user: process.env.STORAGE_USER,
+    password: process.env.STORAGE_PASSWORD,
+  }
 };
