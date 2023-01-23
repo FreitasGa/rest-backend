@@ -18,6 +18,36 @@ model User {
   updatedAt   DateTime  @updatedAt @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
   blockedTill DateTime? @map("blocked_till")
+  avatar      Avatar?
 
   @@map("user")
+}
+
+model File {
+  id           String    @id @default(cuid())
+  originalName String    @map("original_name")
+  size         Int
+  mimeType     String    @map("mime_type")
+  key          String    @unique
+  public       Boolean   @default(false)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+  avatars      Avatar[]
+
+  @@map("file")
+}
+
+model Avatar {
+  id        String    @id @default(cuid())
+  userId    String    @unique @map("user_id")
+  user      User      @relation(fields: [userId], references: [id])
+  fileId    String    @map("file_id")
+  file      File      @relation(fields: [fileId], references: [id])
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@unique([userId, fileId], name: "avatar_user_id_file_id_key")
+  @@map("avatar")
 }
