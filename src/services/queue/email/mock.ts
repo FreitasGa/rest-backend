@@ -1,3 +1,4 @@
+import { Queue } from '..';
 import { Data, EmailQueueService, getTemplate, Job } from './service';
 
 export class MockEmailQueueService implements EmailQueueService {
@@ -9,7 +10,7 @@ export class MockEmailQueueService implements EmailQueueService {
 
     console.info(
       'Adding Job',
-      JSON.stringify({ queue: 'EmailTransactionQueue', job, template, data })
+      JSON.stringify({ queue: Queue.Email, job, template, data })
     );
   }
 }

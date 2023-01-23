@@ -1,6 +1,7 @@
-import config from 'config';
 import { Queue as BullQueue } from 'bullmq';
+import config from 'config';
 
+import { Queue } from '..';
 import {
   Data,
   EmailQueueService,
@@ -13,7 +14,7 @@ export class BullEmailQueueService implements EmailQueueService {
   private readonly queue: BullQueue<QueueData>;
 
   constructor() {
-    this.queue = new BullQueue<QueueData>('EmailTransactionQueue', {
+    this.queue = new BullQueue<QueueData>(Queue.Email, {
       connection: {
         host: config.get('queue.host'),
         port: config.get('queue.port'),

@@ -53,11 +53,17 @@ module.exports = {
         delay: process.env.QUEUE_EMAIL_DELAY,
       },
     },
+    file: {
+      options: {
+        attempts: process.env.QUEUE_FILE_ATTEMPTS,
+        delay: process.env.QUEUE_FILE_DELAY,
+      },
+    },
   },
   storage: {
     host: process.env.STORAGE_HOST,
     port: process.env.STORAGE_PORT,
     user: process.env.STORAGE_USER,
     password: process.env.STORAGE_PASSWORD,
-  }
+  },
 };
