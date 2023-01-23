@@ -20,7 +20,7 @@ async function tokenValidate(
   return service.verify(token);
 }
 
-export async function authMiddleware(
+export async function AuthMiddleware(
   req: Request,
   res: Response,
   next: NextFunction

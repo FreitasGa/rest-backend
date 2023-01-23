@@ -1,6 +1,6 @@
 import {
   Controller as OvernightController,
-  {{ pascalCase http.method }} as OvernightMethod,
+  {{ pascalCase http.method }},
 } from '@overnightjs/core';
 import type { Request, Response } from 'express';
 
@@ -17,7 +17,7 @@ export class {{ pascalCase name }}Controller extends Controller<
   FailureOutput,
   SuccessOutput
 > {
-  @OvernightMethod()
+  @{{ pascalCase http.method }}()
   async handle(
     req: Request,
     res: Response

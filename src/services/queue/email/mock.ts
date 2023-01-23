@@ -7,9 +7,9 @@ export class MockEmailQueueService implements EmailQueueService {
   ): Promise<void> {
     const template = getTemplate(job);
 
-    console.log(
-      'Adding Job to EmailTransactionQueue',
-      JSON.stringify({ job, template, data })
+    console.info(
+      'Adding Job',
+      JSON.stringify({ queue: 'EmailTransactionQueue', job, template, data })
     );
   }
 }
