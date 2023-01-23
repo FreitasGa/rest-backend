@@ -14,7 +14,6 @@ export type IdTokenPayload = {
   sub: string;
   email: string;
   name: string;
-  confirmed: boolean;
 };
 
 export type RefreshTokenPayload = {

@@ -78,7 +78,6 @@ export class SignInUseCase extends UseCase<
       sub: user.id,
       name: user.name,
       email: user.email,
-      confirmed: user.confirmed,
     });
 
     const refreshToken = this.tokenService.sign('RefreshToken', {
