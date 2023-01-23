@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
 import type { File } from '@utils/file';
-import type { Bucket, StorageService } from './service';
+import type { Bucket, PutOptions, StorageService } from './service';
 
 export class MockStorageService implements StorageService {
   private readonly file: File = {
@@ -11,9 +11,20 @@ export class MockStorageService implements StorageService {
     buffer: Buffer.from(''),
   };
 
-  async put(bucket: Bucket, path: string, file: File): Promise<string> {
-    const [, extension] = file.originalName.split('.');
-    const key = `${path}/${uuid()}.${extension}`;
+  async put(
+    bucket: Bucket,
+    path: string,
+    file: File,
+    options?: PutOptions
+  ): Promise<string> {
+    let key: string;
+
+    if (!options || (options && !options.key)) {
+      const [, extension] = file.originalName.split('.');
+      key = `${path}/${uuid()}.${extension}`;
+    } else {
+      key = options.key;
+    }
 
     console.info(`Adding file`, JSON.stringify({ bucket, key, file }));
 

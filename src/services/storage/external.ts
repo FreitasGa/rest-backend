@@ -3,7 +3,7 @@ import { Client as MinioClient } from 'minio';
 import { v4 as uuid } from 'uuid';
 
 import type { File } from '@utils/file';
-import type { Bucket, StorageService } from './service';
+import type { Bucket, PutOptions, StorageService } from './service';
 
 export class MinioStorageService implements StorageService {
   private readonly client: MinioClient;
@@ -18,9 +18,20 @@ export class MinioStorageService implements StorageService {
     });
   }
 
-  async put(bucket: Bucket, path: string, file: File): Promise<string> {
-    const [, extension] = file.originalName.split('.');
-    const key = `${path}/${uuid()}.${extension}`;
+  async put(
+    bucket: Bucket,
+    path: string,
+    file: File,
+    options?: PutOptions
+  ): Promise<string> {
+    let key: string;
+
+    if (!options || (options && !options.key)) {
+      const [, extension] = file.originalName.split('.');
+      key = `${path}/${uuid()}.${extension}`;
+    } else {
+      key = options.key;
+    }
 
     await this.client.putObject(bucket, key, file.buffer, file.size, {
       'Content-Type': file.mimeType,

@@ -7,8 +7,17 @@ const Bucket = {
 
 export type Bucket = (typeof Bucket)[keyof typeof Bucket];
 
+export type PutOptions = {
+  key: string;
+};
+
 export interface StorageService {
-  put(bucket: Bucket, path: string, file: File): Promise<string>;
+  put(
+    bucket: Bucket,
+    path: string,
+    file: File,
+    options?: PutOptions
+  ): Promise<string>;
   get(bucket: Bucket, key: string): Promise<File>;
   delete(bucket: Bucket, key: string): Promise<void>;
   url(bucket: Bucket, key: string): Promise<string>;
