@@ -4,6 +4,7 @@ import type { ApplicationError } from '@errors/application-error';
 import type { BusinessError } from '@errors/business-error';
 import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
+import type { FileQueueService } from '@services/queue/file/service';
 import type { StorageService } from '@services/storage/service';
 import type { UploadUserAvatarInput, UploadUserAvatarOutput } from './dtos';
 import { UserNotFoundError } from './errors';
@@ -20,7 +21,8 @@ export class UploadUserAvatarUseCase extends UseCase<
 > {
   constructor(
     private readonly repository: UploadUserAvatarRepository,
-    private readonly storageService: StorageService
+    private readonly storageService: StorageService,
+    private readonly fileQueueService: FileQueueService
   ) {
     super();
   }
@@ -56,6 +58,12 @@ export class UploadUserAvatarUseCase extends UseCase<
     const file = await this.repository.createFile(input.avatar, key, true);
 
     await this.repository.upsertAvatar(user.id, file.id);
+
+    await this.fileQueueService.add('GenerateImageSizes', {
+      bucket: 'rest-public',
+      key,
+      sizes: [128, 256, 512],
+    });
 
     return right(undefined);
   }

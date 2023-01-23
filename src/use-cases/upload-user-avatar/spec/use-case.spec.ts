@@ -1,5 +1,6 @@
 import type { File } from '@entities/file';
 import type { User } from '@entities/user';
+import { MockFileQueueService } from '@services/queue/file/mock';
 import { MockStorageService } from '@services/storage/mock';
 import type { File as InternalFile } from '@utils/file';
 import { UserNotFoundError } from '../errors';
@@ -26,8 +27,13 @@ const repository = new MockUploadUserAvatarRepository();
 
 function buildUseCase(): UploadUserAvatarUseCase {
   const storageService = new MockStorageService();
+  const fileQueueService = new MockFileQueueService();
 
-  return new UploadUserAvatarUseCase(repository, storageService);
+  return new UploadUserAvatarUseCase(
+    repository,
+    storageService,
+    fileQueueService
+  );
 }
 
 describe('UploadUserAvatarUseCase', () => {
