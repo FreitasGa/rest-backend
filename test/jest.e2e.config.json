@@ -1,5 +1,5 @@
 {
-  "displayName": "Unit Tests",
+  "displayName": "E2E Tests",
   "verbose": true,
   "testEnvironment": "node",
   "clearMocks": true,
@@ -9,20 +9,19 @@
     "ts"
   ],
   "testMatch": [
-    "<rootDir>/src/use-cases/**/*.(spec|test).ts",
-    "<rootDir>/src/services/**/*.(spec|test).ts",
-    "<rootDir>/src/middlewares/**/*.(spec|test).ts"
+    "<rootDir>/test/e2e/**/*.(spec|test).ts"
   ],
   "transform": {
     "^.+\\.(t|j)s$": "@swc/jest"
   },
-  "rootDir": ".",
+  "rootDir": "../.",
   "moduleNameMapper": {
     "@core/(.*)": "<rootDir>/src/core/$1",
-    "@modules/(.*)": "<rootDir>/src/modules/$1",
+    "@decorators/(.*)": "<rootDir>/src/decorators/$1",
     "@entities/(.*)": "<rootDir>/src/entities/$1",
     "@errors/(.*)": "<rootDir>/src/errors/$1",
     "@middlewares/(.*)": "<rootDir>/src/middlewares/$1",
+    "@modules/(.*)": "<rootDir>/src/modules/$1",
     "@services/(.*)": "<rootDir>/src/services/$1",
     "@templates/(.*)": "<rootDir>/src/templates/$1",
     "@use-cases/(.*)": "<rootDir>/src/use-cases/$1",

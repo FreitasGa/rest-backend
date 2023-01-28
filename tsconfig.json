@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES6",                                  
-    "lib": ["ES6"],                                   
+    "lib": ["ESNext"],
     "experimentalDecorators": true,                      
     "emitDecoratorMetadata": true,                       
     "useDefineForClassFields": true,                     
@@ -11,10 +11,10 @@
     "paths": {
       "@core/*": ["src/core/*"],
       "@decorators/*": ["src/decorators/*"],
-      "@modules/*": ["src/modules/*"],
       "@entities/*": ["src/entities/*"],
       "@errors/*": ["src/errors/*"],
       "@middlewares/*": ["src/middlewares/*"],
+      "@modules/*": ["src/modules/*"],
       "@services/*": ["src/services/*"],
       "@templates/*": ["src/templates/*"],
       "@use-cases/*": ["src/use-cases/*"],
@@ -47,7 +47,7 @@
     "allowUnreachableCode": false,                       
     "skipLibCheck": true                                 
   },
-  "exclude": ["node_modules", "dist", "scripts"],
+  "exclude": ["node_modules", "dist"],
   "ts-node": {
     "files": true,
   },

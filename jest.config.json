@@ -21,10 +21,11 @@
   "rootDir": ".",
   "moduleNameMapper": {
     "@core/(.*)": "<rootDir>/src/core/$1",
-    "@modules/(.*)": "<rootDir>/src/modules/$1",
+    "@decorators/(.*)": "<rootDir>/src/decorators/$1",
     "@entities/(.*)": "<rootDir>/src/entities/$1",
     "@errors/(.*)": "<rootDir>/src/errors/$1",
     "@middlewares/(.*)": "<rootDir>/src/middlewares/$1",
+    "@modules/(.*)": "<rootDir>/src/modules/$1",
     "@services/(.*)": "<rootDir>/src/services/$1",
     "@templates/(.*)": "<rootDir>/src/templates/$1",
     "@use-cases/(.*)": "<rootDir>/src/use-cases/$1",
