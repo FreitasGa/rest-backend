@@ -1,17 +1,16 @@
 import type { Prisma } from '@prisma/client';
 
 import type { File } from '@entities/file';
-import type { File as InternalFile } from '@utils/file';
 
 export interface ResizeImageRepository {
-  createFile(file: InternalFile, key: string, isPublic: boolean): Promise<File>;
+  createFile(file: Core.File, key: string, isPublic: boolean): Promise<File>;
 }
 
 export class PrismaResizeImageRepository implements ResizeImageRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async createFile(
-    file: InternalFile,
+    file: Core.File,
     key: string,
     isPublic: boolean
   ): Promise<File> {

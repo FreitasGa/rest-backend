@@ -1,10 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
-import type { File } from '@utils/file';
 import type { Bucket, PutOptions, StorageService } from './service';
 
 export class MockStorageService implements StorageService {
-  private readonly file: File = {
+  private readonly file: Core.File = {
     originalName: 'mocked_file',
     mimeType: 'image/jpeg',
     size: 0,
@@ -14,7 +13,7 @@ export class MockStorageService implements StorageService {
   async put(
     bucket: Bucket,
     path: string,
-    file: File,
+    file: Core.File,
     options?: PutOptions
   ): Promise<string> {
     let key: string;
@@ -31,7 +30,7 @@ export class MockStorageService implements StorageService {
     return key;
   }
 
-  async get(_bucket: Bucket, _key: string): Promise<File> {
+  async get(_bucket: Bucket, _key: string): Promise<Core.File> {
     return this.file;
   }
 

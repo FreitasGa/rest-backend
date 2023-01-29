@@ -2,11 +2,10 @@ import type { Prisma } from '@prisma/client';
 
 import type { File } from '@entities/file';
 import type { User } from '@entities/user';
-import type { File as InternalFile } from '@utils/file';
 
 export interface UploadUserAvatarRepository {
   getUser(id: string): Promise<User | null>;
-  createFile(file: InternalFile, key: string, isPublic: boolean): Promise<File>;
+  createFile(file: Core.File, key: string, isPublic: boolean): Promise<File>;
   upsertAvatar(userId: string, fileId: string): Promise<void>;
 }
 
@@ -20,7 +19,7 @@ export class PrismaUploadUserAvatarRepository
   }
 
   async createFile(
-    file: InternalFile,
+    file: Core.File,
     key: string,
     isPublic: boolean
   ): Promise<File> {

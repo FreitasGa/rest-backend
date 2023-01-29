@@ -1,5 +1,3 @@
-import type { File } from '@utils/file';
-
 const Bucket = {
   Public: 'rest-public',
   Private: 'rest-private',
@@ -15,10 +13,10 @@ export interface StorageService {
   put(
     bucket: Bucket,
     path: string,
-    file: File,
+    file: Core.File,
     options?: PutOptions
   ): Promise<string>;
-  get(bucket: Bucket, key: string): Promise<File>;
+  get(bucket: Bucket, key: string): Promise<Core.File>;
   delete(bucket: Bucket, key: string): Promise<void>;
   url(bucket: Bucket, key: string): Promise<string>;
 }

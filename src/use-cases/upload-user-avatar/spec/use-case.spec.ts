@@ -2,7 +2,6 @@ import type { File } from '@entities/file';
 import type { User } from '@entities/user';
 import { MockFileQueueService } from '@services/queue/file/mock';
 import { MockStorageService } from '@services/storage/mock';
-import type { File as InternalFile } from '@utils/file';
 import { UserNotFoundError } from '../errors';
 import type { UploadUserAvatarRepository } from '../repository';
 import { SuccessOutput, UploadUserAvatarUseCase } from '../use-case';
@@ -12,11 +11,8 @@ import { createFile, getUser, upsertAvatar } from './fixtures/repository';
 class MockUploadUserAvatarRepository implements UploadUserAvatarRepository {
   getUser = jest.fn(async (_id: string): Promise<User | null> => getUser);
   createFile = jest.fn(
-    async (
-      _file: InternalFile,
-      _key: string,
-      _isPublic: boolean
-    ): Promise<File> => createFile
+    async (_file: Core.File, _key: string, _isPublic: boolean): Promise<File> =>
+      createFile
   );
   upsertAvatar = jest.fn(
     async (_userId: string, _fileId: string): Promise<void> => upsertAvatar

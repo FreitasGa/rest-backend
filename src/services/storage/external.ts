@@ -2,7 +2,6 @@ import config from 'config';
 import { Client as MinioClient } from 'minio';
 import { v4 as uuid } from 'uuid';
 
-import type { File } from '@utils/file';
 import type { Bucket, PutOptions, StorageService } from './service';
 
 export class MinioStorageService implements StorageService {
@@ -21,7 +20,7 @@ export class MinioStorageService implements StorageService {
   async put(
     bucket: Bucket,
     path: string,
-    file: File,
+    file: Core.File,
     options?: PutOptions
   ): Promise<string> {
     let key: string;
@@ -41,7 +40,7 @@ export class MinioStorageService implements StorageService {
     return key;
   }
 
-  async get(bucket: Bucket, key: string): Promise<File> {
+  async get(bucket: Bucket, key: string): Promise<Core.File> {
     const readable = await this.client.getObject(bucket, key);
     const stat = await this.client.statObject(bucket, key);
 

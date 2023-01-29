@@ -1,11 +1,4 @@
-export type File = {
-  originalName: string;
-  mimeType: string;
-  size: number;
-  buffer: Buffer;
-};
-
-export function convertMulterFile(file: Express.Multer.File): File {
+export function convertMulterFile(file: Express.Multer.File): Core.File {
   return {
     originalName: file.originalname,
     mimeType: file.mimetype,

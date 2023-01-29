@@ -1,10 +1,9 @@
 import sharp from 'sharp';
 
-import type { File } from '@utils/file';
 import type { Format, ImageService, ResizeOptions } from './service';
 
 export class SharpImageService implements ImageService {
-  async resize(file: File, options: ResizeOptions): Promise<File> {
+  async resize(file: Core.File, options: ResizeOptions): Promise<Core.File> {
     const buffer = await sharp(file.buffer)
       .resize({
         width: options.width,
@@ -26,7 +25,7 @@ export class SharpImageService implements ImageService {
     };
   }
 
-  async format(file: File, format: Format): Promise<File> {
+  async format(file: Core.File, format: Format): Promise<Core.File> {
     const buffer = await sharp(file.buffer).toFormat(format).toBuffer();
 
     const [name] = file.originalName.split('.');

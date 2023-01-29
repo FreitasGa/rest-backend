@@ -1,8 +1,7 @@
-import type { File } from '@utils/file';
 import type { Format, ImageService, ResizeOptions } from './service';
 
 export class MockImageService implements ImageService {
-  async resize(file: File, options: ResizeOptions): Promise<File> {
+  async resize(file: Core.File, options: ResizeOptions): Promise<Core.File> {
     const [name] = file.originalName.split('.');
     const fileName = `${name}-${options.height}.${options.format}`;
 
@@ -13,7 +12,7 @@ export class MockImageService implements ImageService {
       buffer: file.buffer,
     };
   }
-  async format(file: File, format: Format): Promise<File> {
+  async format(file: Core.File, format: Format): Promise<Core.File> {
     const [name] = file.originalName.split('.');
     const fileName = `${name}.${format}`;
 

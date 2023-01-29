@@ -1,5 +1,3 @@
-import type { File } from '@utils/file';
-
 const Format = {
   JPEG: 'jpeg',
   PNG: 'png',
@@ -16,6 +14,6 @@ export type ResizeOptions = {
 };
 
 export interface ImageService {
-  resize(file: File, options: ResizeOptions): Promise<File>;
-  format(file: File, format: Format): Promise<File>;
+  resize(file: Core.File, options: ResizeOptions): Promise<Core.File>;
+  format(file: Core.File, format: Format): Promise<Core.File>;
 }

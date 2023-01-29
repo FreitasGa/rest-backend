@@ -1,8 +1,6 @@
-import type { File } from '@utils/file';
-
 export type UploadUserAvatarInput = {
   userId: string;
-  avatar: File;
+  avatar: Core.File;
 };
 
 export type UploadUserAvatarOutput = void;

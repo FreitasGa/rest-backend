@@ -2,18 +2,14 @@ import type { File } from '@entities/file';
 import { MockImageService } from '@services/image/mock';
 import { MockStorageService } from '@services/storage/mock';
 import { createFile } from '@use-cases/upload-user-avatar/spec/fixtures/repository';
-import type { File as InternalFile } from '@utils/file';
 import type { ResizeImageRepository } from '../repository';
 import { ResizeImageUseCase, SuccessOutput } from '../use-case';
 import { input, output } from './fixtures/dtos';
 
 class MockResizeImageRepository implements ResizeImageRepository {
   createFile = jest.fn(
-    async (
-      _file: InternalFile,
-      _key: string,
-      _isPublic: boolean
-    ): Promise<File> => createFile
+    async (_file: Core.File, _key: string, _isPublic: boolean): Promise<File> =>
+      createFile
   );
 }
 
