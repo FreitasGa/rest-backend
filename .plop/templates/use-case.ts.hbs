@@ -4,10 +4,7 @@ import type { ApplicationError } from '@errors/application-error';
 import type { BusinessError } from '@errors/business-error';
 import { InputValidationError } from '@errors/input-validation-error';
 import type { UnknownError } from '@errors/unknown-error';
-import type {
-  {{ pascalCase name }}Input,
-  {{ pascalCase name }}Output,
-} from './dtos';
+import type { {{ pascalCase name }}Input, {{ pascalCase name }}Output } from './dtos';
 import { DummyError } from './errors';
 import type { {{ pascalCase name }}Repository } from './repository';
 

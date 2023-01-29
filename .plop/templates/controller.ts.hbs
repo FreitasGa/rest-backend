@@ -1,7 +1,4 @@
-import {
-  Controller as OvernightController,
-  {{ pascalCase http.method }},
-} from '@overnightjs/core';
+import { Controller as OvernightController, {{ pascalCase http.method }} } from '@overnightjs/core';
 import type { Request, Response } from 'express';
 
 import { Controller } from '@core/controller';
@@ -28,7 +25,7 @@ export class {{ pascalCase name }}Controller extends Controller<
     if (result.isWrong()) {
       const error = result.value;
 
-      const errorMap = this.getErrorMap<ErrorTypes>({
+      const errorMap = this.mapError<ErrorTypes>({
         InputValidationError: this.badRequest,
         UnknownError: this.internalServerError,
         DummyError: this.badRequest,

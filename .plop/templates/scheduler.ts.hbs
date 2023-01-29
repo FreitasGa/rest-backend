@@ -4,7 +4,7 @@ import { CronScheduler } from '@decorators/cron/scheduler';
 import { buildUseCase } from './factory';
 import type { FailureOutput, SuccessOutput } from './use-case';
 
-@CronScheduler('0 0 0 * * *')
+@CronScheduler('{{ schedule.cron }}')
 export class {{ pascalCase name }}Scheduler extends Scheduler<
   FailureOutput,
   SuccessOutput

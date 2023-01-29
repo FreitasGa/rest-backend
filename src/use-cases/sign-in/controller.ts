@@ -22,7 +22,7 @@ export class SignInController extends Controller<FailureOutput, SuccessOutput> {
     if (result.isWrong()) {
       const error = result.value;
 
-      const errorMap = this.getErrorMap<ErrorTypes>({
+      const errorMap = this.mapError<ErrorTypes>({
         InputValidationError: this.badRequest,
         UnknownError: this.internalServerError,
         InvalidCredentialsError: this.unprocessableEntity,

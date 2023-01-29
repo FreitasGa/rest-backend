@@ -25,7 +25,7 @@ export class ForgotPasswordController extends Controller<
     if (result.isWrong()) {
       const error = result.value;
 
-      const errorMap = this.getErrorMap<ErrorTypes>({
+      const errorMap = this.mapError<ErrorTypes>({
         InputValidationError: this.badRequest,
         UnknownError: this.internalServerError,
         UserNotFoundError: this.unprocessableEntity,

@@ -3,14 +3,21 @@ import { StatusCodes } from 'http-status-codes';
 
 import { Right, Wrong } from './either';
 
+type FailureResponse<FailureOutput, SuccessOutput> = (
+  req: Request,
+  res: Response,
+  result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
+) => FailureOutput;
+
+type ErrorMap<FailureOutput, SuccessOutput, Error extends string> = Record<
+  Error,
+  FailureResponse<FailureOutput, SuccessOutput>
+>;
+
 export abstract class Controller<FailureOutput extends Error, SuccessOutput> {
-  getErrorMap<ErrorTypes extends string>(error: {
-    [Type in ErrorTypes]: (
-      req: Request,
-      res: Response,
-      result: FailureOutput | Wrong<FailureOutput, SuccessOutput>
-    ) => FailureOutput;
-  }) {
+  mapError<Error extends string>(
+    error: ErrorMap<FailureOutput, SuccessOutput, Error>
+  ): ErrorMap<FailureOutput, SuccessOutput, Error> {
     return error;
   }
 

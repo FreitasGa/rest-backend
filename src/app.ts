@@ -1,8 +1,8 @@
 import { Server as OvernightServer } from '@overnightjs/core';
 import bodyParser from 'body-parser';
 import config from 'config';
-import cors, { type CorsOptions } from 'cors';
-import helmet, { type HelmetOptions } from 'helmet';
+import cors, { CorsOptions } from 'cors';
+import helmet, { HelmetOptions } from 'helmet';
 import glob from 'tiny-glob';
 
 import { DatabaseModule, PrismaDatabaseModule } from '@modules/database';

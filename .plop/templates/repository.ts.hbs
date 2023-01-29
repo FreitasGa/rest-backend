@@ -4,9 +4,7 @@ export interface {{ pascalCase name }}Repository {
   dummy(): Promise<void>;
 }
 
-export class Prisma{{ pascalCase name }}Repository
-  implements {{ pascalCase name }}Repository
-{
+export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name }}Repository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async dummy(): Promise<void> {

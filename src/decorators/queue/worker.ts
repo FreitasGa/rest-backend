@@ -16,7 +16,7 @@ export function BullWorker(queue: Queue): ClassDecorator {
 
     new Worker(
       queue,
-      async (currentJob) => {
+      async (currentJob): Promise<void> => {
         for (const job of jobs) {
           if (!job.name || job.name === currentJob.name) {
             await target.prototype[job.method](currentJob);
