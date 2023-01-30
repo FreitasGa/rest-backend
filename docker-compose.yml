@@ -2,6 +2,11 @@ version: '3.8'
 
 name: rest
 
+networks:
+  rest:
+    name: rest
+    driver: bridge
+
 services:
   database:
     container_name: rest-database
@@ -10,6 +15,11 @@ services:
       - 5432:5432
     networks:
       - rest
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -23,6 +33,11 @@ services:
     networks:
       - rest
     command: [redis-server, --requirepass, "redis"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   queue:
     container_name: rest-queue
@@ -32,6 +47,11 @@ services:
     networks:
       - rest
     command: [redis-server, --requirepass, "redis"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   storage:
     container_name: rest-storage
@@ -41,10 +61,15 @@ services:
       - 9001:9001
     networks:
       - rest
+    command: [server, /data, --console-address, ":9001"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       - MINIO_ROOT_USER=minio
       - MINIO_ROOT_PASSWORD=minio123
-    command: [server, /data, --console-address, ":9001"]
 
   backend:
     container_name: rest-backend
@@ -55,10 +80,19 @@ services:
     networks:
       - rest
     depends_on:
-      - database
-      - cache
-      - queue
-      - storage
+      database:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+      queue:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       - NODE_ENV=development
       - PORT
@@ -74,21 +108,21 @@ services:
       - EMAIL_USERNAME
       - EMAIL_PASSWORD
       - EMAIL_FROM
-      - DATABASE_URL=postgresql://postgres:postgres@database:5432/rest?schema=public
+      - OTP_DIGITS
+      - OTP_STEP
+      - OTP_WINDOW
+      - QUEUE_EMAIL_ATTEMPTS
+      - QUEUE_EMAIL_DELAY
+      - QUEUE_FILE_ATTEMPTS
+      - QUEUE_FILE_DELAY
+      - DATABASE_URL=postgresql://postgres:postgres@database:5432/rest?schema=rest
       - CACHE_HOST=cache
       - CACHE_PORT=6379
       - CACHE_PASSWORD
       - QUEUE_HOST=queue
       - QUEUE_PORT=6379
       - QUEUE_PASSWORD
-      - QUEUE_EMAIL_ATTEMPTS
-      - QUEUE_EMAIL_DELAY
       - STORAGE_HOST=storage
       - STORAGE_PORT
       - STORAGE_USER
       - STORAGE_PASSWORD
-
-networks:
-  rest:
-    name: rest
-    driver: bridge
