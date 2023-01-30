@@ -8,7 +8,7 @@ export interface ServerModule {
 
 export class HttpServerModule implements ServerModule {
   private readonly server: Server;
-  private sockets: Socket[] = [];
+  private sockets: Set<Socket> = new Set();
 
   constructor(server: Server) {
     this.server = server;
@@ -16,13 +16,9 @@ export class HttpServerModule implements ServerModule {
 
   handleConnections(): void {
     this.server.on('connection', (socket) => {
-      this.sockets.push(socket);
+      this.sockets.add(socket);
 
-      socket.on('close', () => {
-        this.sockets = this.sockets.filter(
-          (existingSocket) => existingSocket !== socket
-        );
-      });
+      socket.on('close', () => this.sockets.delete(socket));
     });
   }
 
