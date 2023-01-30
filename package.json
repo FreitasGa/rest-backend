@@ -5,7 +5,7 @@
   "main": "main.js",
   "type": "commonjs",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register src/main.ts",
+    "dev": "ts-node-dev --transpile-only -r tsconfig-paths/register src/main.ts",
     "prestart": "prisma migrate deploy",
     "start": "node dist/main.js",
     "prebuild": "rimraf dist",

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES6",                                  
+    "target": "ES2022",                                  
     "lib": ["ESNext"],
     "experimentalDecorators": true,                      
     "emitDecoratorMetadata": true,                       
@@ -50,5 +50,6 @@
   "exclude": ["node_modules", "dist"],
   "ts-node": {
     "files": true,
+    "swc": true,
   },
 }
