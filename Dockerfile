@@ -7,6 +7,7 @@ RUN npm install
 
 COPY . .
 RUN npm run format:write
+RUN npm run lint:write
 RUN npm run generate
 RUN npm run build
 RUN npm prune --production
