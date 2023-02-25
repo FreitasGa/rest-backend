@@ -1,11 +1,38 @@
 import { Controller as OvernightController, Get } from '@overnightjs/core';
 import type { Request, Response } from 'express';
-import { StatusCodes } from 'http-status-codes';
+
+import { Controller } from '@core/controller';
+import type { FailureOutput, SuccessOutput } from './use-case';
+import { buildUseCase } from './factory';
+
+type ErrorTypes = 'UnknownError';
 
 @OvernightController('health')
-export class HealthController {
+export class HealthController extends Controller<FailureOutput, SuccessOutput> {
   @Get()
-  handle(_req: Request, res: Response): void {
-    res.status(StatusCodes.OK).send({ status: 'on' });
+  async handle(
+    req: Request,
+    res: Response
+  ): Promise<SuccessOutput | FailureOutput | undefined> {
+    const useCase = buildUseCase();
+    const result = await useCase.run();
+
+    if (result.isWrong()) {
+      const error = result.value;
+
+      const errorMap = this.mapError<ErrorTypes>({
+        UnknownError: this.internalServerError,
+      });
+
+      const treatment = errorMap[error.constructor.name as ErrorTypes];
+
+      if (!treatment) {
+        throw new Error('Error not treated in use case.');
+      }
+
+      return treatment.bind(this)(req, res, result);
+    }
+
+    return this.ok(req, res, result);
   }
 }
