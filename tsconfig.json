@@ -20,7 +20,7 @@
       "@use-cases/*": ["src/use-cases/*"],
       "@utils/*": ["src/utils/*"]
     },                                                   
-    "rootDirs": ["src", "test"],                         
+    "rootDir": "src",                         
     "typeRoots": ["@types", "./node_modules/@types"],    
     "sourceMap": true,                                   
     "outDir": "dist",                                    
@@ -42,7 +42,6 @@
     "noUnusedParameters": true,                          
     "noImplicitReturns": true,                           
     "noFallthroughCasesInSwitch": true,                  
-    // "noPropertyAccessFromIndexSignature": true,       
     "allowUnusedLabels": false,                          
     "allowUnreachableCode": false,                       
     "skipLibCheck": true                                 
