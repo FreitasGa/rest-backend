@@ -20,7 +20,7 @@
       "@use-cases/*": ["src/use-cases/*"],
       "@utils/*": ["src/utils/*"]
     },                                                   
-    "rootDir": "src",                         
+    "rootDirs": ["src", "test"],                         
     "typeRoots": ["@types", "./node_modules/@types"],    
     "sourceMap": true,                                   
     "outDir": "dist",                                    
